@@ -2,7 +2,7 @@ package ru.dw.gbkotlinweather.repository
 
 class RepositoryImpl : Repository {
     override fun getDataServer(): Weather {
-        Thread.sleep(3000L)
+        Thread.sleep(2000L)
         return Weather()
     }
 
