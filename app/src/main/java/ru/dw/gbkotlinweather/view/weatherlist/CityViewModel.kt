@@ -1,12 +1,13 @@
-package ru.dw.gbkotlinweather.viewmodel
+package ru.dw.gbkotlinweather.view.weatherlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.repository.Repository
 import ru.dw.gbkotlinweather.repository.RepositoryImpl
+import ru.dw.gbkotlinweather.view.AppState
 
-class MainViewModel(
+class CityViewModel(
     private val liveDate: MutableLiveData<AppState> = MutableLiveData(),
     private val repository: Repository = RepositoryImpl()
 ) : ViewModel() {
@@ -14,11 +15,15 @@ class MainViewModel(
         return liveDate
     }
 
-    fun getDataWeather() {
+    fun getDataWeatherRussia() =  getDataWeather(true)
+    fun getDataWeatherWorld() =  getDataWeather(false)
+
+    private fun getDataWeather(isRussian:Boolean) {
         liveDate.postValue(AppState.Loading)
-        if ((0..6).random() > 3) {
+        //if ((0..6).random() > 3) {
+        if (true) {
             Thread {
-                val answer = repository.getDataServer()
+                val answer =if (isRussian)repository.getRussianWeatherFromLocalStorage() else repository.getWorldWeatherFromLocalStorage()
                 liveDate.postValue(AppState.Success(answer))
 
             }.start()

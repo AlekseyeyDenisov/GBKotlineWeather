@@ -6,8 +6,13 @@ class RepositoryImpl : Repository {
         return Weather()
     }
 
-    override fun getDataLocal(): Weather {
-        Thread.sleep(300L)
-        return Weather()
+    override fun getWorldWeatherFromLocalStorage(): List<Weather> {
+        //Thread.sleep(300L)
+        //return getWorldCities()
+        return getNewRussianCities()
+    }
+
+    override fun getRussianWeatherFromLocalStorage(): List<Weather> {
+        return getRussianCities()
     }
 }
