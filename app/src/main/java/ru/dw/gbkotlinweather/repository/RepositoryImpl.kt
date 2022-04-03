@@ -1,15 +1,11 @@
 package ru.dw.gbkotlinweather.repository
 
+import ru.dw.gbkotlinweather.view.AppState
+
 class RepositoryImpl : Repository {
+    private val data:Repository = DataLocal()
 
-    override fun getDataServer(): Weather {
-        Thread.sleep(2000L)
-        return Weather()
-    }
-
-    override fun getWorldWeatherFromLocalStorage(): List<Weather> = getNewRussianCities()
-
-
-    override fun getRussianWeatherFromLocalStorage(): List<Weather> = getRussianCities()
+    override fun getWorldWeatherFromLocalStorage(): AppState = data.getWorldWeatherFromLocalStorage()
+    override fun getRussianWeatherFromLocalStorage():AppState = data.getRussianWeatherFromLocalStorage()
 
 }

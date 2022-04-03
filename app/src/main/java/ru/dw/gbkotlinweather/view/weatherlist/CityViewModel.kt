@@ -20,11 +20,13 @@ class CityViewModel(
 
     private fun getDataWeather(isRussian: Boolean) {
         liveDate.postValue(AppState.Loading)
-        Thread {
-            val answer =
-                if (isRussian) repository.getRussianWeatherFromLocalStorage() else repository.getWorldWeatherFromLocalStorage()
-            liveDate.postValue(AppState.Success(answer))
+        val answer =
+            if (isRussian) {
+                repository.getRussianWeatherFromLocalStorage()
+            } else {
+                repository.getWorldWeatherFromLocalStorage()
+            }
+        liveDate.postValue(answer)
 
-        }.start()
     }
 }

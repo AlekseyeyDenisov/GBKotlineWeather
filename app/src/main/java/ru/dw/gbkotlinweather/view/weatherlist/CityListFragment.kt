@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
-import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentListBinding
 import ru.dw.gbkotlinweather.repository.Weather
+import ru.dw.gbkotlinweather.utils.showSnackBar
 import ru.dw.gbkotlinweather.view.AppState
 import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
@@ -76,13 +76,14 @@ class CityListFragment : Fragment(), OnItemClickListener {
         when (data) {
             is AppState.Error -> {
                 binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(
-                    binding.loadingLayout,
-                    data.error.toString(),
-                    Snackbar.LENGTH_INDEFINITE
-                ).setAction("Попробывать еще раз") {
-                    viewModel.getDataWeatherRussia()
-                }.show()
+                binding.loadingLayout.showSnackBar(data.error.toString())
+//                Snackbar.make(
+//                    binding.loadingLayout,
+//                    data.error.toString(),
+//                    Snackbar.LENGTH_INDEFINITE
+//                ).setAction("Попробывать еще раз") {
+//                    viewModel.getDataWeatherRussia()
+//                }.show()
             }
             AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
