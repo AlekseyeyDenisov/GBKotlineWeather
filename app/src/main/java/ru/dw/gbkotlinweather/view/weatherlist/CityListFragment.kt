@@ -26,7 +26,7 @@ class CityListFragment : Fragment(), OnItemClickListener {
     }
     private val adapter = WeatherListAdapter(this)
     private var isRussian = true
-    private var weatherList: List<Weather> = ArrayList<Weather>()
+    private var weatherList: List<Weather> = ArrayList()
 
 
     override fun onCreateView(
@@ -46,11 +46,7 @@ class CityListFragment : Fragment(), OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val observer = object : Observer<AppState> {
-            override fun onChanged(data: AppState) {
-                render(data)
-            }
-        }
+        val observer = Observer<AppState> { data -> render(data) }
         viewModel.getLiveData().observe(viewLifecycleOwner, observer)
 
         binding.floatingActionButton.setOnClickListener {
@@ -84,11 +80,9 @@ class CityListFragment : Fragment(), OnItemClickListener {
                     binding.loadingLayout,
                     data.error.toString(),
                     Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction("Попробывать еще раз", {
-                        viewModel.getDataWeatherRussia()
-                    })
-                    .show()
+                ).setAction("Попробывать еще раз") {
+                    viewModel.getDataWeatherRussia()
+                }.show()
             }
             AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
@@ -101,6 +95,7 @@ class CityListFragment : Fragment(), OnItemClickListener {
                 } else {
                     val weatherListDiffUtilCallback =
                         WeatherListDiffUtilCallback(weatherList, data.weatherList)
+
                     val productDiffResult = DiffUtil.calculateDiff(weatherListDiffUtilCallback)
                     adapter.setData(data.weatherList)
                     productDiffResult.dispatchUpdatesTo(adapter)

@@ -15,21 +15,16 @@ class CityViewModel(
         return liveDate
     }
 
-    fun getDataWeatherRussia() =  getDataWeather(true)
-    fun getDataWeatherWorld() =  getDataWeather(false)
+    fun getDataWeatherRussia() = getDataWeather(true)
+    fun getDataWeatherWorld() = getDataWeather(false)
 
-    private fun getDataWeather(isRussian:Boolean) {
+    private fun getDataWeather(isRussian: Boolean) {
         liveDate.postValue(AppState.Loading)
-        //if ((0..6).random() > 3) {
-        if (true) {
-            Thread {
-                val answer =if (isRussian)repository.getRussianWeatherFromLocalStorage() else repository.getWorldWeatherFromLocalStorage()
-                liveDate.postValue(AppState.Success(answer))
+        Thread {
+            val answer =
+                if (isRussian) repository.getRussianWeatherFromLocalStorage() else repository.getWorldWeatherFromLocalStorage()
+            liveDate.postValue(AppState.Success(answer))
 
-            }.start()
-        } else {
-            liveDate.postValue(AppState.Error(Throwable("Ошибка")))
-        }
-
+        }.start()
     }
 }

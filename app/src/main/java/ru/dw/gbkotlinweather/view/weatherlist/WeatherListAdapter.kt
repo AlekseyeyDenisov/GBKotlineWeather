@@ -35,12 +35,12 @@ class WeatherListAdapter(
 
     inner class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(weather: Weather) {
-            val binding = ItemRecyclerWeahterBinding.bind(itemView)
-            binding.cityName.text = weather.city.name
-            binding.root.setOnClickListener {
-                onItemClickListener.onItemClick(weather)
+            ItemRecyclerWeahterBinding.bind(itemView).apply {
+                cityName.text = weather.city.name
+                root.setOnClickListener {
+                    onItemClickListener.onItemClick(weather)
+                }
             }
-
         }
     }
 }

@@ -26,29 +26,32 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather: Weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather
-        render(weather)
+        render(arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather)
     }
 
     private fun render(weather: Weather) {
-        binding.loadingLayout.visibility = View.GONE
-        binding.cityName.text = weather.city.name
-        binding.cityCoordinates.text = StringBuilder("${weather.city.lat} ${weather.city.lon}")
-        binding.feelsLikeValue.text = weather.feelsLike.toString()
-        binding.temperatureValue.text = weather.temperature.toString()
-        Snackbar.make(binding.mainView, "Все работает", Snackbar.LENGTH_LONG)
+        with(binding) {
+            loadingLayout.visibility = View.GONE
+            cityName.text = weather.city.name
+            cityCoordinates.text = StringBuilder("${weather.city.lat} ${weather.city.lon}")
+            feelsLikeValue.text = weather.feelsLike.toString()
+            temperatureValue.text = weather.temperature.toString()
+        }
+
+
+        Snackbar.make(binding.mainView, "Все работает", Snackbar.LENGTH_LONG).show()
     }
 
     companion object {
-        fun newInstance(bundel: Bundle): DetailsFragment {
+        fun newInstance(bundle: Bundle): DetailsFragment {
             val fragment = DetailsFragment()
-            fragment.arguments = bundel
+            fragment.arguments = bundle
             return fragment
         }
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
+        super.onDestroyView()
         _banding = null
-        super.onDestroy()
     }
 }
