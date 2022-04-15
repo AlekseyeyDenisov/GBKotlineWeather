@@ -13,6 +13,7 @@ const val CONNECTION_TIMEOUT = 1000
 const val READ_TIMEOUT = 1000
 
 
+
 fun View.showSnackBar(
     text:String,
     length:Int = Snackbar.LENGTH_INDEFINITE
