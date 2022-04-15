@@ -18,7 +18,9 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponseListen
 
     fun getCityWeather(weather: Weather) {
         val latLong = "?lat=${weather.city.lat}&lon=${weather.city.lon}"
-        val urlText = "$YANDEX_DOMAIN$YANDEX_PATH$latLong"
+        //val urlText = "$YANDEX_DOMAIN$YANDEX_PATH$latLong"
+        val urlText = "$YANDEX_DOMAIN_HARD_MODE$YANDEX_PATH$latLong"
+        Log.d("@@@", "urlText: $urlText")
         val uri = URL(urlText)
         Thread {
             val urlConnection: HttpURLConnection =
@@ -30,18 +32,37 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponseListen
             val headers = urlConnection.headerFields
             Log.d("@@@", "headers: $headers")
             val responseCode = urlConnection.responseCode
-            Log.d("@@@", "responseCode: $responseCode")
             val responseMessage = urlConnection.responseMessage
             Log.d("@@@", "responseMessage: $responseMessage")
 
-            val buffer = BufferedReader(InputStreamReader(urlConnection.inputStream))
-            val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
+            val maximumNumberError = 600..2000
+            val serverside = 500..599
+            val clientside = 400..499
+            val responseOk = 200..299
 
+            when(responseCode){
+                in maximumNumberError ->{
+                    onServerResponseListener.onResponse(ResponseState.Error("Не известная ошибка $maximumNumberError"))
+                    Log.d("@@@", "Не известная ошибка $maximumNumberError")
+                }
+                in serverside ->{
+                    Log.d("@@@", "serverside: $serverside")
+                    onServerResponseListener.onResponse(ResponseState.Error(responseMessage))
+                }
+                in clientside ->{
+                    Log.d("@@@", "clientside: $clientside")
+                    onServerResponseListener.onResponse(ResponseState.Error(responseMessage))
 
-            val weatherResult = map(weather, weatherDTO)
-            Log.d("@@@", "getCityWeather: $weatherResult")
-            Handler(Looper.getMainLooper()).post {
-                onServerResponseListener.onResponse(ResponseState.OnResponseSuccess(weatherResult))
+                }
+                in responseOk ->{
+                    val buffer = BufferedReader(InputStreamReader(urlConnection.inputStream))
+                    val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
+                    val weatherResult = map(weather, weatherDTO)
+                    Log.d("@@@", "getCityWeather: $weatherResult")
+                    Handler(Looper.getMainLooper()).post {
+                        onServerResponseListener.onResponse(ResponseState.OnResponseSuccess(weatherResult))
+                    }
+                }
             }
 
         }.start()

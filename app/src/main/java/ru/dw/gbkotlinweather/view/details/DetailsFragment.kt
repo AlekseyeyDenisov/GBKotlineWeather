@@ -66,7 +66,7 @@ class DetailsFragment : Fragment(), OnServerResponseListener {
                 render(response.weather)
             }
             is ResponseState.Error ->{
-
+                Snackbar.make(binding.mainView, response.error, Snackbar.LENGTH_LONG).show()
             }
 
 
