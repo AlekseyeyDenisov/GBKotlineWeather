@@ -20,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".view.details.ServiceWeather"/>
         <receiver
-            android:name=".service.BroadcastReceiverWeather"
+            android:name=".view.BroadcastReceiverWeather"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

@@ -1,22 +1,49 @@
 package ru.dw.gbkotlinweather.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentDetailsBinding
 import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
-import ru.dw.gbkotlinweather.repository.api_yandex.WeatherLoader
 import ru.dw.gbkotlinweather.repository.model.Weather
+import ru.dw.gbkotlinweather.utils.*
 import ru.dw.gbkotlinweather.view.viewmodel.ResponseState
 
-const val KEY_BUNDLE_WEATHER = "KEY_BUNDLE_WEATHER"
 
-class DetailsFragment : Fragment(), OnServerResponseListener {
+class DetailsFragment : Fragment() {
     private var _banding: FragmentDetailsBinding? = null
     private val binding get() = _banding!!
+
+    private val receiver = object :BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when(intent?.action){
+                KEY_WAVE_SERVICE_BROADCAST_SUCCESS ->{
+                    intent.getParcelableExtra<Weather>(KEY_BUNDLE_SERVICE_BROADCAST_WEATHER_SUCCESS)?.let {
+                       render(it)
+                    }
+                }
+                KEY_WAVE_SERVICE_BROADCAST_ERROR ->{
+                    val messageError = intent.getStringExtra(
+                        KEY_BUNDLE_SERVICE_BROADCAST_WEATHER_ERROR
+                    )
+                    Toast.makeText(requireContext(), "Ошибка $messageError", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
+    }
 
 
     override fun onCreateView(
@@ -29,9 +56,19 @@ class DetailsFragment : Fragment(), OnServerResponseListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather
+        val weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER_DETAILS) as Weather
 
-        WeatherLoader(this).getCityWeather(weather)
+        requireActivity().startService(Intent(requireContext(), ServiceWeather::class.java).apply {
+            putExtra(KEY_BUNDLE_WEATHER_DETAILS, weather)
+        })
+
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver,
+            IntentFilter(KEY_WAVE_SERVICE_BROADCAST_SUCCESS)
+        )
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver,
+            IntentFilter(KEY_WAVE_SERVICE_BROADCAST_ERROR)
+        )
+
     }
 
     private fun render(weather: Weather) {
@@ -58,19 +95,7 @@ class DetailsFragment : Fragment(), OnServerResponseListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _banding = null
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
     }
 
-    override fun onResponse(response: ResponseState) {
-        when(response){
-            is ResponseState.OnResponseSuccess ->{
-                render(response.weather)
-            }
-            is ResponseState.Error ->{
-                Snackbar.make(binding.mainView, response.error, Snackbar.LENGTH_LONG).show()
-            }
-
-
-        }
-
-    }
 }

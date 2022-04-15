@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.service
+package ru.dw.gbkotlinweather.view
 
 import android.content.BroadcastReceiver
 import android.content.Context

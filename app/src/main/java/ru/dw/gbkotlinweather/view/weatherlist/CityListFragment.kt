@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.DiffUtil
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentListBinding
 import ru.dw.gbkotlinweather.repository.model.Weather
+import ru.dw.gbkotlinweather.utils.KEY_BUNDLE_WEATHER_DETAILS
 import ru.dw.gbkotlinweather.utils.showSnackBar
 import ru.dw.gbkotlinweather.view.details.DetailsFragment
-import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
 import ru.dw.gbkotlinweather.view.viewmodel.AppState
 import ru.dw.gbkotlinweather.view.viewmodel.CityViewModel
 
@@ -118,7 +118,7 @@ class CityListFragment : Fragment(), OnItemClickListener {
 
     override fun onItemClick(weather: Weather) {
         val bundle = Bundle()
-        bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
+        bundle.putParcelable(KEY_BUNDLE_WEATHER_DETAILS, weather)
         requireActivity().supportFragmentManager.beginTransaction()
             .add(
                 R.id.container,
