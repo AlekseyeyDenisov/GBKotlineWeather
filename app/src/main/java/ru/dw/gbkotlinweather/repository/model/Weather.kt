@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository
+package ru.dw.gbkotlinweather.repository.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Weather(
     val city: City = getDefaultCity(),
-    val temperature: Int = 0,
-    val feelsLike: Int = 0
+    var temperature: Int = 0,
+    var feelsLike: Int = 0
 ):Parcelable
 @Parcelize
 data class City(val name: String, val lat: Double, val lon: Double):Parcelable

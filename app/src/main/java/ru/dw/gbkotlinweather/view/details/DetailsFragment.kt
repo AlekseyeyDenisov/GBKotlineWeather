@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentDetailsBinding
-import ru.dw.gbkotlinweather.repository.Weather
+import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
+import ru.dw.gbkotlinweather.repository.api_yandex.WeatherLoader
+import ru.dw.gbkotlinweather.repository.model.Weather
+import ru.dw.gbkotlinweather.view.viewmodel.ResponseState
 
 const val KEY_BUNDLE_WEATHER = "KEY_BUNDLE_WEATHER"
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), OnServerResponseListener {
     private var _banding: FragmentDetailsBinding? = null
     private val binding get() = _banding!!
 
@@ -26,7 +29,9 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        render(arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather)
+        val weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather
+
+        WeatherLoader(this).getCityWeather(weather)
     }
 
     private fun render(weather: Weather) {
@@ -53,5 +58,19 @@ class DetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _banding = null
+    }
+
+    override fun onResponse(response: ResponseState) {
+        when(response){
+            is ResponseState.OnResponseSuccess ->{
+                render(response.weather)
+            }
+            is ResponseState.Error ->{
+
+            }
+
+
+        }
+
     }
 }

@@ -1,6 +1,6 @@
-package ru.dw.gbkotlinweather.view
+package ru.dw.gbkotlinweather.view.viewmodel
 
-import ru.dw.gbkotlinweather.repository.Weather
+import ru.dw.gbkotlinweather.repository.model.Weather
 
 sealed class AppState {
     object Loading: AppState()
