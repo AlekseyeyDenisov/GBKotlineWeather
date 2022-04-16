@@ -1,7 +1,7 @@
 package ru.dw.gbkotlinweather.view.weatherlist
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.dw.gbkotlinweather.repository.model.Weather
+import ru.dw.gbkotlinweather.model.Weather
 
 class WeatherListDiffUtilCallback(private val oldData: List<Weather>, private val newData: List<Weather>) :
     DiffUtil.Callback() {

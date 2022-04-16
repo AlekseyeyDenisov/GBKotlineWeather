@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.google.gson.Gson
-import ru.dw.gbkotlinweather.repository.model.Weather
+import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.*
 import ru.dw.gbkotlinweather.view.viewmodel.ResponseState
 import java.io.BufferedReader
@@ -17,6 +17,7 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponseListen
 
 
     fun getCityWeather(weather: Weather) {
+        onServerResponseListener.onResponse(ResponseState.Loading)
         val latLong = "?lat=${weather.city.lat}&lon=${weather.city.lon}"
         //val urlText = "$YANDEX_DOMAIN$YANDEX_PATH$latLong"
         val urlText = "$YANDEX_DOMAIN_HARD_MODE$YANDEX_PATH$latLong"

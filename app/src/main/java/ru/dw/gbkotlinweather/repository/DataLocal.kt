@@ -1,7 +1,7 @@
 package ru.dw.gbkotlinweather.repository
 
-import ru.dw.gbkotlinweather.repository.model.City
-import ru.dw.gbkotlinweather.repository.model.Weather
+import ru.dw.gbkotlinweather.model.City
+import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.view.viewmodel.AppState
 
 class DataLocal : RepositoryListCity {
