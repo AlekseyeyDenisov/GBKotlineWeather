@@ -29,11 +29,13 @@ class DetailsFragment : Fragment() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when(intent?.action){
                 KEY_WAVE_SERVICE_BROADCAST_SUCCESS ->{
+                    binding.loadingLayout.visibility = View.GONE
                     intent.getParcelableExtra<Weather>(KEY_BUNDLE_SERVICE_BROADCAST_WEATHER_SUCCESS)?.let {
                        render(it)
                     }
                 }
                 KEY_WAVE_SERVICE_BROADCAST_ERROR ->{
+                    binding.loadingLayout.visibility = View.GONE
                     val messageError = intent.getStringExtra(
                         KEY_BUNDLE_SERVICE_BROADCAST_WEATHER_ERROR
                     )
@@ -57,6 +59,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER_DETAILS) as Weather
+        binding.loadingLayout.visibility = View.VISIBLE
 
         requireActivity().startService(Intent(requireContext(), ServiceWeather::class.java).apply {
             putExtra(KEY_BUNDLE_WEATHER_DETAILS, weather)
