@@ -2,26 +2,33 @@ package ru.dw.gbkotlinweather.view.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.repository.RepositoryImpl
 import ru.dw.gbkotlinweather.repository.RepositoryWeather
 import ru.dw.gbkotlinweather.model.Weather
+import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
+import ru.dw.gbkotlinweather.repository.api_yandex.WeatherLoader
 
 
 class DetailsViewModel(
-    private val liveDate: MutableLiveData<ResponseState> = MutableLiveData()
+    private val liveDate: MutableLiveData<DetailsState> = MutableLiveData()
 ) : ViewModel() {
 
-    private val repository: RepositoryWeather by lazy {
-        RepositoryImpl()
-    }
+
 
     fun getLiveDataCityWeather() = liveDate
 
 
-    fun upDataWeather(weather: Weather) {
-        repository.getCityWeather(weather){
-            liveDate.postValue(it)
-        }
+    fun upDataWeather(city: City) {
+        liveDate.postValue(DetailsState.Loading)
+        WeatherLoader(object :OnServerResponseListener{
+            override fun onResponseSuccess(weather: Weather) {
+                liveDate.postValue(DetailsState.Success(weather))
+            }
+            override fun error(error: String) {
+                liveDate.postValue(DetailsState.Error(Throwable(error)))
+            }
+        }).getCityWeather(city)
     }
 
 }

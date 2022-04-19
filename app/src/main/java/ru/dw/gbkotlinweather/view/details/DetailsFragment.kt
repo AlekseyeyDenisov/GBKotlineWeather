@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentDetailsBinding
 import ru.dw.gbkotlinweather.model.Weather
+import ru.dw.gbkotlinweather.view.viewmodel.DetailsState
 import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
-import ru.dw.gbkotlinweather.view.viewmodel.ResponseState
 
 const val KEY_BUNDLE_WEATHER = "KEY_BUNDLE_WEATHER"
 
@@ -36,8 +36,8 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather
 
-        viewModelDetails.upDataWeather(weather)
-        val observer = Observer<ResponseState> { data -> render(data) }
+        viewModelDetails.upDataWeather(weather.city)
+        val observer = Observer<DetailsState> { data -> render(data) }
         viewModelDetails.getLiveDataCityWeather().observe(viewLifecycleOwner, observer)
 
     }
@@ -67,17 +67,17 @@ class DetailsFragment : Fragment() {
         _banding = null
     }
 
-     fun render(response: ResponseState) {
+     fun render(response: DetailsState) {
         when(response){
-            is ResponseState.OnResponseSuccess ->{
+            is DetailsState.Success ->{
                 binding.loadingDetailsLayout.visibility = View.GONE
                 render(response.weather)
             }
-            is ResponseState.Error ->{
+            is DetailsState.Error -> {
                 binding.loadingDetailsLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView, response.error, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.mainView, response.error.message!!, Snackbar.LENGTH_LONG).show()
             }
-            ResponseState.Loading -> {
+            DetailsState.Loading -> {
                 binding.loadingDetailsLayout.visibility = View.VISIBLE
             }
         }
