@@ -17,21 +17,23 @@ const val CONSTANT_LAT = "lat"
 const val CONSTANT_LON = "lon"
 
 
-
 fun View.showSnackBar(
-    text:String,
-    length:Int = Snackbar.LENGTH_INDEFINITE
-){
-    Snackbar.make( this,text,length ).show()
+    text: String,
+    length: Int = Snackbar.LENGTH_INDEFINITE
+) {
+    Snackbar.make(this, text, length).show()
 }
 
-fun map(weather: Weather, weatherDTO: WeatherDTO): Weather {
-    weatherDTO.fact?.feelsLike?.let {
-        weather.feelsLike = it
 
-    }
+fun convertDtoToModel(weather: Weather, weatherDTO: WeatherDTO): Weather {
     weatherDTO.fact?.temp?.let {
         weather.temperature = it
+    }
+    weatherDTO.fact?.feelsLike?.let {
+        weather.feelsLike = it
+    }
+    weatherDTO.fact?.icon?.let {
+        weather.icon = it
     }
     return weather
 }

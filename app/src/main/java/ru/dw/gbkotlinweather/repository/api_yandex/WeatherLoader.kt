@@ -58,7 +58,7 @@ class WeatherLoader: DetailsRepository {
                     val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
                     val weather = Weather()
                     weather.city = city
-                    val weatherResult = map(weather, weatherDTO)
+                    val weatherResult = convertDtoToModel(weather, weatherDTO)
                     Log.d("@@@", "getCityWeather: $weatherResult")
                     Handler(Looper.getMainLooper()).post {
                         callbackWeather.onResponseSuccess(weatherResult)

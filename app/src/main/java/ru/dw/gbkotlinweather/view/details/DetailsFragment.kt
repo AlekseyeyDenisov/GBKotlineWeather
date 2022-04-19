@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentDetailsBinding
 import ru.dw.gbkotlinweather.model.Weather
@@ -37,22 +41,11 @@ class DetailsFragment : Fragment() {
         val weather = arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER) as Weather
 
         viewModelDetails.upDataWeather(weather.city)
-        val observer = Observer<DetailsState> { data -> render(data) }
+        val observer = Observer<DetailsState> { data -> getResponse(data) }
         viewModelDetails.getLiveDataCityWeather().observe(viewLifecycleOwner, observer)
 
     }
 
-    private fun render(weather: Weather) {
-        with(binding) {
-            loadingDetailsLayout.visibility = View.GONE
-            cityName.text = weather.city.name
-            cityCoordinates.text = StringBuilder("${weather.city.lat} ${weather.city.lon}")
-            feelsLikeValue.text = weather.feelsLike.toString()
-            temperatureValue.text = weather.temperature.toString()
-        }
-
-
-    }
 
     companion object {
         fun newInstance(bundle: Bundle): DetailsFragment {
@@ -67,7 +60,7 @@ class DetailsFragment : Fragment() {
         _banding = null
     }
 
-    fun render(response: DetailsState) {
+    private fun getResponse(response: DetailsState) {
         when (response) {
             is DetailsState.Success -> {
                 binding.loadingDetailsLayout.visibility = View.GONE
@@ -83,5 +76,31 @@ class DetailsFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun render(weather: Weather) {
+        with(binding) {
+            loadingDetailsLayout.visibility = View.GONE
+            cityName.text = weather.city.name
+            cityCoordinates.text = StringBuilder("${weather.city.lat} ${weather.city.lon}")
+            feelsLikeValue.text = weather.feelsLike.toString()
+            temperatureValue.text = weather.temperature.toString()
+            headerIcon.loadSvg("https://yastatic.net/weather/i/icons/blueye/color/svg/${weather.icon}.svg")
+        }
+
+
+    }
+
+    private fun ImageView.loadSvg(url: String) {
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry { add(SvgDecoder(this@loadSvg.context)) }
+            .build()
+        val request = ImageRequest.Builder(this.context)
+            .crossfade(true)
+            .crossfade(500)
+            .data(url)
+            .target(this)
+            .build()
+        imageLoader.enqueue(request)
     }
 }

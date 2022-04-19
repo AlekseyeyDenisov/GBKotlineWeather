@@ -14,7 +14,7 @@ import ru.dw.gbkotlinweather.repository.api_yandex.DetailsRepository
 import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
 import ru.dw.gbkotlinweather.repository.api_yandex.WeatherDTO
 import ru.dw.gbkotlinweather.utils.YANDEX_DOMAIN
-import ru.dw.gbkotlinweather.utils.map
+import ru.dw.gbkotlinweather.utils.convertDtoToModel
 
 object DetailsRepositoryRetrofit : DetailsRepository {
     private val retrofit: WeatherApi = initRetrofit()
@@ -35,7 +35,7 @@ object DetailsRepositoryRetrofit : DetailsRepository {
                     response.body()?.let {weatherDto->
                         val weather = Weather()
                         weather.city = city
-                        callbackWeather.onResponseSuccess(map(weather,weatherDto))
+                        callbackWeather.onResponseSuccess(convertDtoToModel(weather,weatherDto))
                     }
                 }
             }
