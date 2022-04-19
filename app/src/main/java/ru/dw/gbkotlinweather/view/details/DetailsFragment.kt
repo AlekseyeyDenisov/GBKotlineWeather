@@ -19,7 +19,7 @@ class DetailsFragment : Fragment() {
     private var _banding: FragmentDetailsBinding? = null
     private val binding get() = _banding!!
 
-    private val viewModelDetails:DetailsViewModel by lazy {
+    private val viewModelDetails: DetailsViewModel by lazy {
         ViewModelProvider(this).get(DetailsViewModel::class.java)
     }
 
@@ -67,15 +67,16 @@ class DetailsFragment : Fragment() {
         _banding = null
     }
 
-     fun render(response: DetailsState) {
-        when(response){
-            is DetailsState.Success ->{
+    fun render(response: DetailsState) {
+        when (response) {
+            is DetailsState.Success -> {
                 binding.loadingDetailsLayout.visibility = View.GONE
                 render(response.weather)
             }
             is DetailsState.Error -> {
                 binding.loadingDetailsLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView, response.error.message!!, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.mainView, response.error.message!!, Snackbar.LENGTH_LONG)
+                    .show()
             }
             DetailsState.Loading -> {
                 binding.loadingDetailsLayout.visibility = View.VISIBLE

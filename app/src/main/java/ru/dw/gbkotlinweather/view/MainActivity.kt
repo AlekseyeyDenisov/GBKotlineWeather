@@ -15,13 +15,8 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CityListFragment.newInstance())
                 .commit()
-            lesson()
-
         }
     }
 
-    private fun lesson() {
-
-    }
 
 }

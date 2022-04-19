@@ -57,7 +57,7 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponseListen
                 in responseOk ->{
                     val buffer = BufferedReader(InputStreamReader(urlConnection.inputStream))
                     val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
-                    var weather = Weather()
+                    val weather = Weather()
                     weather.city = city
                     val weatherResult = map(weather, weatherDTO)
                     Log.d("@@@", "getCityWeather: $weatherResult")
