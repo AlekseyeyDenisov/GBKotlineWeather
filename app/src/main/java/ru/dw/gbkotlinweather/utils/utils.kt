@@ -3,14 +3,19 @@ package ru.dw.gbkotlinweather.utils
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.BuildConfig
+import ru.dw.gbkotlinweather.model.Weather
+import ru.dw.gbkotlinweather.repository.api_yandex.WeatherDTO
 
 const val YANDEX_DOMAIN = "https://api.weather.yandex.ru/"
 const val YANDEX_DOMAIN_HARD_MODE = "http://212.86.114.27/"
-const val YANDEX_PATH = "v2/informers"
+const val YANDEX_POINT = "v2/informers"
 const val YANDEX_API_KEY = "X-Yandex-API-Key"
 const val API_KEY = BuildConfig.WEATHER_API_KEY
 const val CONNECTION_TIMEOUT = 1000
 const val READ_TIMEOUT = 1000
+const val CONSTANT_LAT = "lat"
+const val CONSTANT_LON = "lon"
+
 
 
 fun View.showSnackBar(
@@ -18,5 +23,16 @@ fun View.showSnackBar(
     length:Int = Snackbar.LENGTH_INDEFINITE
 ){
     Snackbar.make( this,text,length ).show()
+}
+
+fun map(weather: Weather, weatherDTO: WeatherDTO): Weather {
+    weatherDTO.fact?.feelsLike?.let {
+        weather.feelsLike = it
+
+    }
+    weatherDTO.fact?.temp?.let {
+        weather.temperature = it
+    }
+    return weather
 }
 
