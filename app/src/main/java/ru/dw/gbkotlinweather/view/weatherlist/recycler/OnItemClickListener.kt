@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.view.weatherlist
+package ru.dw.gbkotlinweather.view.weatherlist.recycler
 
 import ru.dw.gbkotlinweather.model.Weather
 

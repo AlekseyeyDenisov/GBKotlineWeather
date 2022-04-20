@@ -1,8 +1,9 @@
-package ru.dw.gbkotlinweather.view.weatherlist
+package ru.dw.gbkotlinweather.view.weatherlist.recycler
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.dw.gbkotlinweather.databinding.ItemRecyclerWeahterBinding
 import ru.dw.gbkotlinweather.model.Weather
@@ -15,19 +16,22 @@ class WeatherListAdapter(
 
 
     fun setData(newData: List<Weather>) {
+        val callback = WeatherListDiffUtilCallback(data,newData)
+        val diffUtilCallback = DiffUtil.calculateDiff(callback)
+        diffUtilCallback.dispatchUpdatesTo(this)
         this.data = newData
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): WeatherListAdapter.CityHolder {
+    ): CityHolder {
         val binding =
             ItemRecyclerWeahterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CityHolder(binding.root)
     }
 
-    override fun onBindViewHolder(holder: WeatherListAdapter.CityHolder, position: Int) {
+    override fun onBindViewHolder(holder: CityHolder, position: Int) {
         holder.bind(data[position])
     }
 

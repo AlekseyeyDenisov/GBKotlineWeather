@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.view.weatherlist
+package ru.dw.gbkotlinweather.view.weatherlist.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 import ru.dw.gbkotlinweather.model.Weather
