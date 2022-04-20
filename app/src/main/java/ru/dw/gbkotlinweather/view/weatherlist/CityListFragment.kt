@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DiffUtil
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentListBinding
 import ru.dw.gbkotlinweather.model.Weather
@@ -17,6 +16,8 @@ import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
 import ru.dw.gbkotlinweather.view.viewmodel.AppState
 import ru.dw.gbkotlinweather.view.viewmodel.CityViewModel
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListener
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.WeatherListAdapter
 
 
 class CityListFragment : Fragment(), OnItemClickListener {
@@ -27,7 +28,6 @@ class CityListFragment : Fragment(), OnItemClickListener {
     }
     private val adapter = WeatherListAdapter(this)
     private var isRussian = true
-    private var weatherList: List<Weather> = ArrayList()
 
 
     override fun onCreateView(
@@ -84,18 +84,7 @@ class CityListFragment : Fragment(), OnItemClickListener {
             }
             is AppState.Success -> {
                 binding.loadingListLayout.visibility = View.GONE
-                if (weatherList.isEmpty()) {
-                    weatherList = data.weatherList
-                    adapter.setData(data.weatherList)
-                } else {
-                    val weatherListDiffUtilCallback =
-                        WeatherListDiffUtilCallback(weatherList, data.weatherList)
-
-                    val productDiffResult = DiffUtil.calculateDiff(weatherListDiffUtilCallback)
-                    adapter.setData(data.weatherList)
-                    productDiffResult.dispatchUpdatesTo(adapter)
-                }
-                weatherList = data.weatherList
+                adapter.setData(data.weatherList)
             }
 
         }
