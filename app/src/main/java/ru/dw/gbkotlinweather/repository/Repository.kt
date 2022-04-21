@@ -1,6 +1,8 @@
 package ru.dw.gbkotlinweather.repository
 
 interface Repository {
-    fun getDataWeatherServer():Weather
+
+    fun getDataServer(): Weather
+
     fun getDataLocal():Weather
 }

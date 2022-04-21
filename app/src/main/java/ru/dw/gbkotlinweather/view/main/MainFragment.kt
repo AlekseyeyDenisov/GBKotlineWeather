@@ -9,57 +9,66 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentMainBinding
-import ru.dw.gbkotlinweather.viewmodel.AppSate
+
+import ru.dw.gbkotlinweather.viewmodel.AppState
+
 import ru.dw.gbkotlinweather.viewmodel.MainViewModel
 
 
 class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: MainViewModel by lazy {
+
+    private var _banding:FragmentMainBinding? = null
+    private val binding get() = _banding!!
+    private val viewModel:MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
+
+        _banding = FragmentMainBinding.inflate(inflater, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val observer = object : Observer<AppSate> {
-            override fun onChanged(data: AppSate) {
-                renderData(data)
-            }
 
+        val observer = object:Observer<AppState>{
+            override fun onChanged(data: AppState) {
+                render(data)
+            }
         }
-        viewModel.getLiveDataWeather().observe(viewLifecycleOwner, observer)
-        viewModel.getWeather()
+        viewModel.getLiveData().observe(viewLifecycleOwner,observer)
+        viewModel.getDataWeather()
     }
 
-    private fun renderData(data: AppSate) {
-        when (data) {
-            is AppSate.Error -> {
+    private fun render(data: AppState) {
+        when(data){
+            is AppState.Error -> {
                 binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView, data.error.toString(), Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Обновить", {
-                        viewModel.getWeather()
+                Snackbar.make(binding.mainView,data.error.toString(),Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Попробывать еще раз",{
+                        viewModel.getDataWeather()
                     })
                     .show()
             }
-            is AppSate.Loading -> {
+            AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
             }
-            is AppSate.Success -> {
-                binding.cityName.text = data.weather.city.name
-                binding.cityCoordinates.text = "${data.weather.city.lat} ${data.weather.city.lon}"
-                binding.feelsLikeValue.text = data.weather.feelsLike.toString()
-                binding.temperatureValue.text = data.weather.temperature.toString()
-                Snackbar.make(binding.mainView, "Все получилось", Snackbar.LENGTH_LONG).show()
+            is AppState.Success -> {
                 binding.loadingLayout.visibility = View.GONE
+                binding.cityName.text = data.data.city.name
+                binding.cityCoordinates.text = StringBuilder("${data.data.city.lat} ${data.data.city.lon}")
+                binding.feelsLikeValue.text = data.data.feelsLike.toString()
+                binding.temperatureValue.text = data.data.temperature.toString()
+                Snackbar.make(binding.mainView,"Все работает",Snackbar.LENGTH_LONG)
+                    .show()
+
+
             }
         }
     }
@@ -69,7 +78,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        _banding = null
         super.onDestroy()
-        _binding = null
     }
 }

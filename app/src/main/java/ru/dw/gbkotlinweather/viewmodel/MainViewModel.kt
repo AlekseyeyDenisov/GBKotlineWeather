@@ -4,27 +4,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.repository.Repository
-import ru.dw.gbkotlinweather.repository.RepositoryIpl
+import ru.dw.gbkotlinweather.repository.RepositoryImpl
 
 class MainViewModel(
-    private val liveDataWeather: MutableLiveData<AppSate> = MutableLiveData(),
-    private val repository: Repository = RepositoryIpl()
+    private val liveDate: MutableLiveData<AppState> = MutableLiveData(),
+    private val repository: Repository = RepositoryImpl()
 ) : ViewModel() {
-
-    fun getLiveDataWeather(): LiveData<AppSate> {
-        return liveDataWeather
+    fun getLiveData(): LiveData<AppState> {
+        return liveDate
     }
 
-    fun getWeather() {
-        liveDataWeather.postValue(AppSate.Loading)
-        Thread {
-            if ((0..6).random() > 3) {
-                val data = repository.getDataWeatherServer()
-                liveDataWeather.postValue(AppSate.Success(data))
-            } else {
-                liveDataWeather.postValue(AppSate.Error(Throwable("Ошибка")))
-            }
-        }.start()
+    fun getDataWeather() {
+        liveDate.postValue(AppState.Loading)
+        if ((0..6).random() > 3) {
+            Thread {
+                val answer = repository.getDataServer()
+                liveDate.postValue(AppState.Success(answer))
+
+            }.start()
+        } else {
+            liveDate.postValue(AppState.Error(Throwable("Ошибка")))
+        }
+
     }
 
 }
