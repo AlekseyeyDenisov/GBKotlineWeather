@@ -9,11 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentMainBinding
+
 import ru.dw.gbkotlinweather.viewmodel.AppState
+
 import ru.dw.gbkotlinweather.viewmodel.MainViewModel
 
 
 class MainFragment : Fragment() {
+
     private var _banding:FragmentMainBinding? = null
     private val binding get() = _banding!!
     private val viewModel:MainViewModel by lazy {
@@ -21,16 +24,19 @@ class MainFragment : Fragment() {
     }
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _banding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val observer = object:Observer<AppState>{
             override fun onChanged(data: AppState) {
                 render(data)
@@ -61,6 +67,8 @@ class MainFragment : Fragment() {
                 binding.temperatureValue.text = data.data.temperature.toString()
                 Snackbar.make(binding.mainView,"Все работает",Snackbar.LENGTH_LONG)
                     .show()
+
+
             }
         }
     }
