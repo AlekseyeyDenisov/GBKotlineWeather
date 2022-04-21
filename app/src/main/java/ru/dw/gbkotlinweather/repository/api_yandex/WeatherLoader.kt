@@ -55,16 +55,17 @@ class WeatherLoader: DetailsRepository {
                 }
                 in responseOk -> {
                     val buffer = BufferedReader(InputStreamReader(urlConnection.inputStream))
-                    val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
-                    val weather = Weather()
-                    weather.city = city
-                    val weatherResult = convertDtoToModel(weather, weatherDTO)
-                    Log.d("@@@", "getCityWeather: $weatherResult")
+                    val weatherDto: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
+                    val weather = convertDtoToModel(weatherDto).apply {
+                        this.city = city
+                    }
+                    Log.d("@@@", "getCityWeather: $weather")
                     Handler(Looper.getMainLooper()).post {
-                        callbackWeather.onResponseSuccess(weatherResult)
+                        callbackWeather.onResponseSuccess(weather)
                     }
                 }
             }
+            urlConnection.disconnect()
 
         }.start()
     }

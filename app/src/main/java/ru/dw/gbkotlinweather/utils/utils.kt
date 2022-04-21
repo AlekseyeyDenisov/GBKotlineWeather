@@ -25,7 +25,8 @@ fun View.showSnackBar(
 }
 
 
-fun convertDtoToModel(weather: Weather, weatherDTO: WeatherDTO): Weather {
+fun convertDtoToModel(weatherDTO: WeatherDTO): Weather {
+    val weather= Weather()
     weatherDTO.fact?.temp?.let {
         weather.temperature = it
     }

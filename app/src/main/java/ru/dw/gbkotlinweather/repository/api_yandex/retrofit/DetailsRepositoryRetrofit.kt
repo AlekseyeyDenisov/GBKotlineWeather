@@ -33,9 +33,10 @@ object DetailsRepositoryRetrofit : DetailsRepository {
             override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
                 if (response.isSuccessful){
                     response.body()?.let {weatherDto->
-                        val weather = Weather()
-                        weather.city = city
-                        callbackWeather.onResponseSuccess(convertDtoToModel(weather,weatherDto))
+                        val weather = convertDtoToModel(weatherDto).apply {
+                            this.city = city
+                        }
+                        callbackWeather.onResponseSuccess(weather)
                     }
                 }
             }
