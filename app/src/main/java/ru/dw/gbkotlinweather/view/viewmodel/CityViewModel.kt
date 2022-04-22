@@ -13,8 +13,8 @@ class CityViewModel(
         return liveDate
     }
 
-    fun getDataWeatherRussia() = getDataWeather(true)
-    fun getDataWeatherWorld() = getDataWeather(false)
+    fun getDataListCity(flag:Boolean) = getDataWeather(flag)
+
 
     private fun getDataWeather(isRussian: Boolean) {
         liveDate.postValue(AppState.Loading)

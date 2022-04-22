@@ -6,15 +6,13 @@ import ru.dw.gbkotlinweather.view.viewmodel.AppState
 
 class DataLocal : RepositoryListCity {
     override fun getWorldWeatherFromLocalStorage(): AppState {
-      //return  if ((1..6).random() > 1)
-      return  if (true)
-             AppState.Success(getWorldCities())
+        return if ((1..10).random() > 1)
+            AppState.Success(getWorldCities())
         else AppState.Error(Throwable("Ошибка"))
     }
 
     override fun getRussianWeatherFromLocalStorage(): AppState {
-        //return  if ((1..6).random() > 1)
-            return  if (true)
+        return if ((1..10).random() > 1)
             AppState.Success(getRussianCities())
         else AppState.Error(Throwable("Ошибка"))
     }

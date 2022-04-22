@@ -1,6 +1,7 @@
 package ru.dw.gbkotlinweather.view.weatherlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
+import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentListBinding
 import ru.dw.gbkotlinweather.model.Weather
@@ -26,8 +29,11 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
     private val viewModel: CityViewModel by lazy {
         ViewModelProvider(this).get(CityViewModel::class.java)
     }
+
     //private val adapterWeatherList = WeatherListAdapter(this)                   //list Adapter
     private val adapterWeatherList = WeatherItemAdapter(this) //Item Adapter
+
+    private val pref = MyApp.sharedPreferencesManager
     private var isRussian = true
 
 
@@ -36,49 +42,46 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
         savedInstanceState: Bundle?
     ): View {
         _banding = FragmentListBinding.inflate(inflater, container, false)
-
         initRecycler()
+
         return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObserve()
+        initFloatingButton(pref.getDefaultFloatingActionButton())
+    }
+
+    private fun initObserve() {
+        val observer = Observer<AppState> { data -> render(data) }
+        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
+    }
+
+    private fun initFloatingButton(flag: Boolean) {
+        viewModel.getDataListCity(flag)
+
+        binding.floatingActionButton.setOnClickListener {
+            isRussian = !isRussian
+            viewModel.getDataListCity(isRussian)
+            pref.setDefaultFloatingActionButton(isRussian)
+        }
     }
 
     private fun initRecycler() {
         binding.listWeatherRecyclerView.adapter = adapterWeatherList
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val observer = Observer<AppState> { data -> render(data) }
-        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
-
-        binding.floatingActionButton.setOnClickListener {
-            isRussian = !isRussian
-            if (isRussian) {
-                viewModel.getDataWeatherRussia()
-                binding.floatingActionButton.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_russia
-                    )
-                )
-            } else {
-                viewModel.getDataWeatherWorld()
-                binding.floatingActionButton.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_earth
-                    )
-                )
-            }
-        }
-        viewModel.getDataWeatherRussia()
-    }
-
     private fun render(data: AppState) {
         when (data) {
             is AppState.Error -> {
                 binding.loadingListLayout.visibility = View.GONE
-                binding.loadingListLayout.showSnackBar(data.error.toString())
+                binding.loadingListLayout.showSnackBar(data.error.toString(), getString(R.string.updateListCity),
+                    {
+                    viewModel.getDataListCity(isRussian)
+                    setValueFloatingButton(isRussian)
+                })
             }
             AppState.Loading -> {
                 binding.loadingListLayout.visibility = View.VISIBLE
@@ -87,18 +90,30 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
                 binding.loadingListLayout.visibility = View.GONE
                 //adapterWeatherList.setData(data.weatherList) //list Adapter
                 adapterWeatherList.submitList(data.weatherList)//Item Adapter
+                setValueFloatingButton(pref.getDefaultFloatingActionButton())
             }
 
         }
     }
 
-    companion object {
-        fun newInstance() = CityListFragment()
-    }
+    private fun setValueFloatingButton(flag:Boolean) {
+        if (flag) {
+            binding.floatingActionButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_russia
+                )
+            )
+        } else {
 
-    override fun onDestroy() {
-        _banding = null
-        super.onDestroy()
+            binding.floatingActionButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_earth
+                )
+            )
+        }
+
     }
 
     override fun onItemClick(weather: Weather) {
@@ -109,5 +124,14 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
                 R.id.container,
                 DetailsFragment.newInstance(bundle)
             ).addToBackStack("").commit()
+    }
+
+    companion object {
+        fun newInstance() = CityListFragment()
+    }
+
+    override fun onDestroy() {
+        _banding = null
+        super.onDestroy()
     }
 }

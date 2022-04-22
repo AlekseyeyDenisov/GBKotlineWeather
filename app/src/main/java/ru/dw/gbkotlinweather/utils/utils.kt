@@ -17,16 +17,20 @@ const val CONSTANT_LAT = "lat"
 const val CONSTANT_LON = "lon"
 
 
+
+
 fun View.showSnackBar(
     text: String,
+    actionText: String,
+    action: (View) -> Unit,
     length: Int = Snackbar.LENGTH_INDEFINITE
 ) {
-    Snackbar.make(this, text, length).show()
+    Snackbar.make(this, text, length).setAction(actionText,action).show()
 }
 
 
 fun convertDtoToModel(weatherDTO: WeatherDTO): Weather {
-    val weather= Weather()
+    val weather = Weather()
     weatherDTO.fact?.temp?.let {
         weather.temperature = it
     }
