@@ -16,17 +16,18 @@ import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
 import ru.dw.gbkotlinweather.view.viewmodel.AppState
 import ru.dw.gbkotlinweather.view.viewmodel.CityViewModel
-import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListener
-import ru.dw.gbkotlinweather.view.weatherlist.recycler.WeatherListAdapter
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListenerListCity
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.item.WeatherItemAdapter
 
 
-class CityListFragment : Fragment(), OnItemClickListener {
+class CityListFragment : Fragment(), OnItemClickListenerListCity {
     private var _banding: FragmentListBinding? = null
     private val binding get() = _banding!!
     private val viewModel: CityViewModel by lazy {
         ViewModelProvider(this).get(CityViewModel::class.java)
     }
-    private val adapter = WeatherListAdapter(this)
+    //private val adapterWeatherList = WeatherListAdapter(this)                   //list Adapter
+    private val adapterWeatherList = WeatherItemAdapter(this) //Item Adapter
     private var isRussian = true
 
 
@@ -41,7 +42,7 @@ class CityListFragment : Fragment(), OnItemClickListener {
     }
 
     private fun initRecycler() {
-        binding.listWeatherRecyclerView.adapter = adapter
+        binding.listWeatherRecyclerView.adapter = adapterWeatherList
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,7 +85,8 @@ class CityListFragment : Fragment(), OnItemClickListener {
             }
             is AppState.Success -> {
                 binding.loadingListLayout.visibility = View.GONE
-                adapter.setData(data.weatherList)
+                //adapterWeatherList.setData(data.weatherList) //list Adapter
+                adapterWeatherList.submitList(data.weatherList)//Item Adapter
             }
 
         }

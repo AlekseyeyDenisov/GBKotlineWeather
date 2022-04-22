@@ -1,18 +1,19 @@
-package ru.dw.gbkotlinweather.view.weatherlist.recycler
+package ru.dw.gbkotlinweather.view.weatherlist.recycler.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.dw.gbkotlinweather.databinding.ItemRecyclerWeahterBinding
 import ru.dw.gbkotlinweather.model.Weather
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.HolderAdapterWeather
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListenerListCity
 
 class WeatherListAdapter(
-    private val onItemClickListener: OnItemClickListener,
+    private val onItemClickListenerListCity: OnItemClickListenerListCity,
     private var data: List<Weather> = listOf()
 ) :
-    RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
+    RecyclerView.Adapter<HolderAdapterWeather>() {
 
 
     fun setData(newData: List<Weather>) {
@@ -22,29 +23,17 @@ class WeatherListAdapter(
         this.data = newData
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): CityHolder {
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): HolderAdapterWeather {
         val binding =
             ItemRecyclerWeahterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CityHolder(binding.root)
+        return HolderAdapterWeather(binding.root,onItemClickListenerListCity)
     }
 
-    override fun onBindViewHolder(holder: CityHolder, position: Int) {
+    override fun onBindViewHolder(holder: HolderAdapterWeather, position: Int) {
         holder.bind(data[position])
     }
 
     override fun getItemCount(): Int = data.size
 
-    inner class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(weather: Weather) {
-            ItemRecyclerWeahterBinding.bind(itemView).apply {
-                cityName.text = weather.city.name
-                root.setOnClickListener {
-                    onItemClickListener.onItemClick(weather)
-                }
-            }
-        }
-    }
+
 }
