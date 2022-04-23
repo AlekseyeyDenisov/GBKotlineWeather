@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.model.Weather
-import ru.dw.gbkotlinweather.repository.api_yandex.DetailsRepository
+import ru.dw.gbkotlinweather.repository.DetailsRepository
 import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
 import ru.dw.gbkotlinweather.repository.api_yandex.retrofit.DetailsRepositoryRetrofit
 

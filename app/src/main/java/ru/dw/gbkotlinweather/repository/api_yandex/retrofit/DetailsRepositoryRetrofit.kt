@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.dw.gbkotlinweather.BuildConfig.WEATHER_API_KEY
 import ru.dw.gbkotlinweather.model.City
-import ru.dw.gbkotlinweather.repository.api_yandex.DetailsRepository
+import ru.dw.gbkotlinweather.repository.DetailsRepository
 import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
 import ru.dw.gbkotlinweather.repository.api_yandex.WeatherDTO
 import ru.dw.gbkotlinweather.utils.YANDEX_DOMAIN

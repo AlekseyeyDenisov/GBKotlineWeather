@@ -1,8 +1,6 @@
 package ru.dw.gbkotlinweather.view
 
 import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         registerReceiver(receiverWeather, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
     }
-
 
 
     override fun onPause() {

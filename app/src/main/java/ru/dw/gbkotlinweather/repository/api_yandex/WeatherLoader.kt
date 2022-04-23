@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import ru.dw.gbkotlinweather.model.City
+import ru.dw.gbkotlinweather.repository.DetailsRepository
 import ru.dw.gbkotlinweather.utils.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
