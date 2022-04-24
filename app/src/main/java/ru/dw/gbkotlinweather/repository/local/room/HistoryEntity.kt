@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository.room
+package ru.dw.gbkotlinweather.repository.local.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,8 +8,10 @@ import androidx.room.PrimaryKey
 data class HistoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id:Long,
-    val city: String,
-    val timestamp:Long, // первичный ключь city + timestamp
+    val city:String,
+    val lat:Double,
+    val lon:Double,
+    //val timestamp:Int, // первичный ключь city + timestamp
     val temperature: Int,
     val feelsLike: Int,
     val icon: String

@@ -5,158 +5,158 @@ import com.google.gson.annotations.SerializedName
 data class WeatherDTO(
 
 	@field:SerializedName("now_dt")
-	val nowDt: String? = null,
+	val nowDt: String,
 
 	@field:SerializedName("fact")
-	val fact: Fact? = null,
+	val fact: Fact,
 
 	@field:SerializedName("now")
-	val now: Int? = null,
+	val now: Int,
 
 	@field:SerializedName("forecast")
-	val forecast: Forecast? = null,
+	val forecast: Forecast,
 
 	@field:SerializedName("info")
-	val info: Info? = null
+	val info: Info
 )
 
 data class PartsItem(
 
 	@field:SerializedName("polar")
-	val polar: Boolean? = null,
+	val polar: Boolean,
 
 	@field:SerializedName("pressure_mm")
-	val pressureMm: Int? = null,
+	val pressureMm: Int,
 
 	@field:SerializedName("icon")
-	val icon: String? = null,
+	val icon: String,
 
 	@field:SerializedName("prec_period")
-	val precPeriod: Int? = null,
+	val precPeriod: Int,
 
 	@field:SerializedName("wind_dir")
-	val windDir: String? = null,
+	val windDir: String,
 
 	@field:SerializedName("temp_max")
-	val tempMax: Int? = null,
+	val tempMax: Int,
 
 	@field:SerializedName("feels_like")
-	val feelsLike: Int? = null,
+	val feelsLike: Int,
 
 	@field:SerializedName("wind_gust")
-	val windGust: Double? = null,
+	val windGust: Double,
 
 	@field:SerializedName("temp_min")
-	val tempMin: Int? = null,
+	val tempMin: Int,
 
 	@field:SerializedName("condition")
-	val condition: String? = null,
+	val condition: String,
 
 	@field:SerializedName("temp_avg")
-	val tempAvg: Int? = null,
+	val tempAvg: Int,
 
 	@field:SerializedName("pressure_pa")
-	val pressurePa: Int? = null,
+	val pressurePa: Int,
 
 	@field:SerializedName("humidity")
-	val humidity: Int? = null,
+	val humidity: Int,
 
 	@field:SerializedName("wind_speed")
-	val windSpeed: Double? = null,
+	val windSpeed: Double,
 
 	@field:SerializedName("daytime")
-	val daytime: String? = null,
+	val daytime: String,
 
 	@field:SerializedName("part_name")
-	val partName: String? = null,
+	val partName: String,
 
 	@field:SerializedName("prec_mm")
-	val precMm: Float? = null,
+	val precMm: Float,
 
 	@field:SerializedName("prec_prob")
-	val precProb: Int? = null
+	val precProb: Int
 )
 
 data class Info(
 
 	@field:SerializedName("lon")
-	val lon: Double? = null,
+	val lon: Double,
 
 	@field:SerializedName("url")
-	val url: String? = null,
+	val url: String,
 
 	@field:SerializedName("lat")
-	val lat: Double? = null
+	val lat: Double
 )
 
 data class Fact(
 
 	@field:SerializedName("polar")
-	val polar: Boolean? = null,
+	val polar: Boolean,
 
 	@field:SerializedName("temp")
-	val temp: Int? = null,
+	val temp: Int,
 
 	@field:SerializedName("icon")
-	val icon: String? = null,
+	val icon: String,
 
 	@field:SerializedName("pressure_mm")
-	val pressureMm: Int? = null,
+	val pressureMm: Int,
 
 	@field:SerializedName("wind_dir")
-	val windDir: String? = null,
+	val windDir: String,
 
 	@field:SerializedName("feels_like")
-	val feelsLike: Int? = null,
+	val feelsLike: Int,
 
 	@field:SerializedName("wind_gust")
-	val windGust: Double? = null,
+	val windGust: Double,
 
 	@field:SerializedName("condition")
-	val condition: String? = null,
+	val condition: String,
 
 	@field:SerializedName("pressure_pa")
-	val pressurePa: Int? = null,
+	val pressurePa: Int,
 
 	@field:SerializedName("humidity")
-	val humidity: Int? = null,
+	val humidity: Int,
 
 	@field:SerializedName("season")
-	val season: String? = null,
+	val season: String,
 
 	@field:SerializedName("wind_speed")
-	val windSpeed: Double? = null,
+	val windSpeed: Double,
 
 	@field:SerializedName("daytime")
-	val daytime: String? = null,
+	val daytime: String,
 
 	@field:SerializedName("obs_time")
-	val obsTime: Int? = null
+	val obsTime: Int
 )
 
 data class Forecast(
 
 	@field:SerializedName("date")
-	val date: String? = null,
+	val date: String,
 
 	@field:SerializedName("sunrise")
-	val sunrise: String? = null,
+	val sunrise: String,
 
 	@field:SerializedName("week")
-	val week: Int? = null,
+	val week: Int,
 
 	@field:SerializedName("moon_text")
-	val moonText: String? = null,
+	val moonText: String,
 
 	@field:SerializedName("date_ts")
-	val dateTs: Int? = null,
+	val dateTs: Int,
 
 	@field:SerializedName("sunset")
-	val sunset: String? = null,
+	val sunset: String,
 
 	@field:SerializedName("parts")
-	val parts: List<PartsItem?>? = null,
+	val parts: List<PartsItem?>,
 
 	@field:SerializedName("moon_code")
-	val moonCode: Int? = null
+	val moonCode: Int
 )

@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository.room
+package ru.dw.gbkotlinweather.repository.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

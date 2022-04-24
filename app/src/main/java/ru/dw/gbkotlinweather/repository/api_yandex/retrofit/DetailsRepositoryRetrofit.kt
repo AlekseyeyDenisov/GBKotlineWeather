@@ -8,12 +8,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.dw.gbkotlinweather.BuildConfig.WEATHER_API_KEY
+import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.repository.DetailsRepository
-import ru.dw.gbkotlinweather.repository.api_yandex.OnServerResponseListener
 import ru.dw.gbkotlinweather.repository.api_yandex.WeatherDTO
 import ru.dw.gbkotlinweather.utils.YANDEX_DOMAIN
 import ru.dw.gbkotlinweather.utils.convertDtoToModel
+import ru.dw.gbkotlinweather.utils.convertWeatherToEntity
+import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
 
 object DetailsRepositoryRetrofit : DetailsRepository {
     private val retrofit: WeatherApi = initRetrofit()
@@ -26,24 +28,31 @@ object DetailsRepositoryRetrofit : DetailsRepository {
         }.build().create(WeatherApi::class.java)
     }
 
-    override fun getWeatherDetails(city: City, callbackWeather: OnServerResponseListener) {
-
-        retrofit.getWeather(WEATHER_API_KEY,city.lat,city.lon).enqueue(object :Callback<WeatherDTO>{
-            override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
-                if (response.isSuccessful){
-                    response.body()?.let {weatherDto->
-                        val weather = convertDtoToModel(weatherDto).apply {
-                            this.city = city
+    override fun getWeatherDetails(
+        city: City,
+        callbackDetailsWeather: DetailsViewModel.CallbackDetails
+    ) {
+        retrofit.getWeather(WEATHER_API_KEY, city.lat, city.lon)
+            .enqueue(object : Callback<WeatherDTO> {
+                override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { weatherDto ->
+                            val weather = convertDtoToModel(weatherDto).apply {
+                                this.city = city
+                            }
+                            callbackDetailsWeather.onResponseSuccess(weather)
+                            Thread {
+                                MyApp.getDBRoom().insert(convertWeatherToEntity(weather))
+                            }.start()
                         }
-                        callbackWeather.onResponseSuccess(weather)
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
-                t.message?.let { callbackWeather.error(it) }
-            }
+                override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
+                    t.message?.let { callbackDetailsWeather.onFail(it) }
+                }
 
-        })
+            })
     }
+
 }

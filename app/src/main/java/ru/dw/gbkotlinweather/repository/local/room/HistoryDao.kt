@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository.room
+package ru.dw.gbkotlinweather.repository.local.room
 
 import androidx.room.*
 
@@ -27,7 +27,8 @@ interface HistoryDao {
     fun getAll():List<HistoryEntity>
 
 
-    @Query("SELECT * FROM history_table WHERE city=:city")
+    //@Query("SELECT * FROM history_table WHERE city=:city ORDER BY ID DESC LIMIT 1")
+    @Query("SELECT * FROM history_table WHERE city=:city ORDER BY ID DESC LIMIT 1")
     fun getHistoryForCity(city:String):HistoryEntity
 
 }

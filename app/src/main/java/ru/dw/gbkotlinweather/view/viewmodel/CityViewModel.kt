@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.repository.RepositoryImpl
+import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
 
 class CityViewModel(
-    private val liveDate: MutableLiveData<AppState> = MutableLiveData(),
+    private val liveDate: MutableLiveData<ListState> = MutableLiveData(),
     private val repository: RepositoryImpl = RepositoryImpl()
 ) : ViewModel() {
-    fun getLiveData(): LiveData<AppState> {
+    fun getLiveData(): LiveData<ListState> {
         return liveDate
     }
 
@@ -17,7 +18,7 @@ class CityViewModel(
 
 
     private fun getDataWeather(isRussian: Boolean) {
-        liveDate.postValue(AppState.Loading)
+        liveDate.postValue(ListState.Loading)
         val answer =
             if (isRussian) {
                 repository.getRussianWeatherFromLocalStorage()

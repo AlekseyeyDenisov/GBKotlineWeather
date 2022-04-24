@@ -4,30 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.widget.Toast
+import ru.dw.gbkotlinweather.utils.SharedPreferencesManager
 
 class BroadcastReceiverWeather : BroadcastReceiver() {
+
     override fun onReceive(context: Context, intent: Intent) {
-        //Log.d("@@@", "onReceive: ${intent.action}")
+        val pref = SharedPreferencesManager(context)
         when (intent.action) {
             "android.net.conn.CONNECTIVITY_CHANGE" -> {
-                val noConnectivity =
+                val isConnectivity =
                     intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
-                if (!noConnectivity) {
-                    onConnectionFound(context)
-                } else {
-                    onConnectionLost(context)
-                }
+                pref.setIsInternet(!isConnectivity)
             }
         }
-    }
-
-    private fun onConnectionLost(context: Context) {
-        Toast.makeText(context, "Connection lost", Toast.LENGTH_LONG).show()
-    }
-
-    private fun onConnectionFound(context: Context) {
-        Toast.makeText(context, "Connection", Toast.LENGTH_LONG).show()
     }
 
 

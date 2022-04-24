@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.repository.DetailsRepository
 import ru.dw.gbkotlinweather.utils.*
+import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -16,7 +17,7 @@ import java.net.URL
 
 class WeatherLoader : DetailsRepository {
 
-    override fun getWeatherDetails(city: City, callbackWeather: OnServerResponseListener) {
+    override fun getWeatherDetails(city: City, callbackDetailsWeather: DetailsViewModel.CallbackDetails) {
         val latLong = "?lat=${city.lat}&lon=${city.lon}"
         //val urlText = "$YANDEX_DOMAIN$YANDEX_PATH$latLong"
         val urlText = "$YANDEX_DOMAIN_HARD_MODE$YANDEX_POINT$latLong"
@@ -45,16 +46,16 @@ class WeatherLoader : DetailsRepository {
 
                 when (responseCode) {
                     in maximumNumberError -> {
-                        callbackWeather.error("Не известная ошибка $maximumNumberError")
+                        callbackDetailsWeather.onFail("Не известная ошибка $maximumNumberError")
                         Log.d("@@@", "Не известная ошибка $maximumNumberError")
                     }
                     in serverside -> {
                         Log.d("@@@", "serverside: $serverside")
-                        callbackWeather.error(responseMessage)
+                        callbackDetailsWeather.onFail(responseMessage)
                     }
                     in clientside -> {
                         Log.d("@@@", "clientside: $clientside")
-                        callbackWeather.error(responseMessage)
+                        callbackDetailsWeather.onFail(responseMessage)
 
                     }
                     in responseOk -> {
@@ -65,12 +66,12 @@ class WeatherLoader : DetailsRepository {
                         }
                         Log.d("@@@", "getCityWeather: $weather")
                         Handler(Looper.getMainLooper()).post {
-                            callbackWeather.onResponseSuccess(weather)
+                            callbackDetailsWeather.onResponseSuccess(weather)
                         }
                     }
                 }
             } catch (e: JsonSyntaxException) {
-                e.message?.let { callbackWeather.error(it) }
+                e.message?.let { callbackDetailsWeather.onFail(it) }
 
             } finally {
                 urlConnection.disconnect()

@@ -1,7 +1,6 @@
 package ru.dw.gbkotlinweather.view.weatherlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentListBinding
@@ -17,10 +15,10 @@ import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.showSnackBar
 import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
-import ru.dw.gbkotlinweather.view.viewmodel.AppState
+import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
 import ru.dw.gbkotlinweather.view.viewmodel.CityViewModel
 import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListenerListCity
-import ru.dw.gbkotlinweather.view.weatherlist.recycler.item.WeatherItemAdapter
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.list.WeatherItemAdapter
 
 
 class CityListFragment : Fragment(), OnItemClickListenerListCity {
@@ -55,7 +53,7 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
     }
 
     private fun initObserve() {
-        val observer = Observer<AppState> { data -> render(data) }
+        val observer = Observer<ListState> { data -> render(data) }
         viewModel.getLiveData().observe(viewLifecycleOwner, observer)
     }
 
@@ -73,9 +71,9 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
         binding.listWeatherRecyclerView.adapter = adapterWeatherList
     }
 
-    private fun render(data: AppState) {
+    private fun render(data: ListState) {
         when (data) {
-            is AppState.Error -> {
+            is ListState.Error -> {
                 binding.loadingListLayout.visibility = View.GONE
                 binding.loadingListLayout.showSnackBar(data.error.toString(), getString(R.string.updateListCity),
                     {
@@ -83,10 +81,10 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
                     setValueFloatingButton(isRussian)
                 })
             }
-            AppState.Loading -> {
+            ListState.Loading -> {
                 binding.loadingListLayout.visibility = View.VISIBLE
             }
-            is AppState.Success -> {
+            is ListState.Success -> {
                 binding.loadingListLayout.visibility = View.GONE
                 //adapterWeatherList.setData(data.weatherList) //list Adapter
                 adapterWeatherList.submitList(data.weatherList)//Item Adapter

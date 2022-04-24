@@ -8,6 +8,7 @@ import ru.dw.gbkotlinweather.databinding.ItemRecyclerWeahterBinding
 import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.view.weatherlist.recycler.HolderAdapterWeather
 import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListenerListCity
+import ru.dw.gbkotlinweather.view.weatherlist.recycler.item.WeatherListDiffUtilCallback
 
 class WeatherListAdapter(
     private val onItemClickListenerListCity: OnItemClickListenerListCity,
