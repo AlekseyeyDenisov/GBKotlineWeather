@@ -30,7 +30,7 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
     //private val adapterWeatherList = WeatherListAdapter(this)                   //list Adapter
     private val adapterWeatherList = WeatherItemAdapter(this) //Item Adapter
 
-    private val pref = MyApp.getPref()
+    private val pref = MyApp.pref
     private var isRussian = true
 
 
