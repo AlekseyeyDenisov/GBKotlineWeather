@@ -24,6 +24,7 @@ const val CONNECTION_TIMEOUT = 1000
 const val READ_TIMEOUT = 1000
 const val CONSTANT_LAT = "lat"
 const val CONSTANT_LON = "lon"
+const val TAG_FRAGMENT_HISTORY = "fragment-history"
 
 
 fun View.showSnackBar(
