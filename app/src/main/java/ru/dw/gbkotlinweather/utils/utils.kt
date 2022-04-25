@@ -10,9 +10,9 @@ import ru.dw.gbkotlinweather.BuildConfig
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.model.getDefaultCity
-import ru.dw.gbkotlinweather.repository.api_yandex.Fact
-import ru.dw.gbkotlinweather.repository.api_yandex.WeatherDTO
-import ru.dw.gbkotlinweather.repository.local.room.HistoryEntity
+import ru.dw.gbkotlinweather.data.api_yandex.Fact
+import ru.dw.gbkotlinweather.data.api_yandex.WeatherDTO
+import ru.dw.gbkotlinweather.data.room.HistoryEntity
 
 const val TAG = "@@@"
 const val YANDEX_DOMAIN = "https://api.weather.yandex.ru/"

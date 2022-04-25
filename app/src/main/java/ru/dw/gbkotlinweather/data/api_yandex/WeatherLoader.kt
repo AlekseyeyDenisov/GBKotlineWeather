@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository.api_yandex
+package ru.dw.gbkotlinweather.data.api_yandex
 
 import android.os.Handler
 import android.os.Looper
@@ -8,7 +8,7 @@ import com.google.gson.JsonSyntaxException
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.repository.DetailsRepository
 import ru.dw.gbkotlinweather.utils.*
-import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
+import ru.dw.gbkotlinweather.view.details.DetailsViewModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection

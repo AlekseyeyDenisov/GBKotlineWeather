@@ -4,20 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import coil.ImageLoader
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentDetailsBinding
 import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.getUrlYandexSvgIcon
 import ru.dw.gbkotlinweather.utils.loadSvg
-import ru.dw.gbkotlinweather.view.viewmodel.state.DetailsState
-import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
+import ru.dw.gbkotlinweather.view.state.DetailsState
 
 const val KEY_BUNDLE_WEATHER = "KEY_BUNDLE_WEATHER"
 

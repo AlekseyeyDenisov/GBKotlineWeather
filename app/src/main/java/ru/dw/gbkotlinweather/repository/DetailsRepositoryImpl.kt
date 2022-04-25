@@ -8,9 +8,9 @@ import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.convertHistoryEntityToWeather
 import ru.dw.gbkotlinweather.utils.convertListHistoryEntityToWeather
 import ru.dw.gbkotlinweather.utils.convertWeatherToEntity
-import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
+import ru.dw.gbkotlinweather.view.details.DetailsViewModel
 
-class DetailsRepositoryRoomImpl : DetailsRepository, DetailsRepositoryAll, DetailsRepositoryAdd {
+class DetailsRepositoryImpl : DetailsRepository, DetailsRepositoryAll, DetailsRepositoryAdd {
 
     override fun getAllWeatherDetails(callback: DetailsViewModel.CallbackResponseForAll) {
         Thread {

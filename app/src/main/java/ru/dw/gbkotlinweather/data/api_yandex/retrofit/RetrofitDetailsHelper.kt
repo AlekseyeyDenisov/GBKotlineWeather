@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository.api_yandex.retrofit
+package ru.dw.gbkotlinweather.data.api_yandex.retrofit
 
 import android.util.Log
 import com.google.gson.GsonBuilder
@@ -11,13 +11,13 @@ import ru.dw.gbkotlinweather.BuildConfig.WEATHER_API_KEY
 import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.repository.DetailsRepository
-import ru.dw.gbkotlinweather.repository.api_yandex.WeatherDTO
+import ru.dw.gbkotlinweather.data.api_yandex.WeatherDTO
 import ru.dw.gbkotlinweather.utils.YANDEX_DOMAIN
 import ru.dw.gbkotlinweather.utils.convertDtoToModel
 import ru.dw.gbkotlinweather.utils.convertWeatherToEntity
-import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
+import ru.dw.gbkotlinweather.view.details.DetailsViewModel
 
-object DetailsRepositoryRetrofit : DetailsRepository {
+object RetrofitDetailsHelper : DetailsRepository {
     private val retrofit: WeatherApi = initRetrofit()
 
     private fun initRetrofit(): WeatherApi {

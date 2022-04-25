@@ -1,9 +1,9 @@
-package ru.dw.gbkotlinweather.repository.local
+package ru.dw.gbkotlinweather.data.local
 
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.repository.RepositoryListCity
-import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
+import ru.dw.gbkotlinweather.view.state.ListState
 
 class DataLocalListCity : RepositoryListCity {
     override fun getWorldWeatherFromLocalStorage(): ListState {

@@ -11,8 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import ru.dw.gbkotlinweather.databinding.FragmentListHistoryBinding
 import ru.dw.gbkotlinweather.utils.TAG
 import ru.dw.gbkotlinweather.view.histiry.recycler.AdapterWeatherItemHistory
-import ru.dw.gbkotlinweather.view.viewmodel.HistoryCityViewModel
-import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
+import ru.dw.gbkotlinweather.view.state.ListState
 
 
 class CityHistoryListFragment : Fragment() {

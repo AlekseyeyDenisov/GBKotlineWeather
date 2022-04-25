@@ -1,10 +1,10 @@
-package ru.dw.gbkotlinweather.view.viewmodel
+package ru.dw.gbkotlinweather.view.weatherlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.repository.RepositoryImpl
-import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
+import ru.dw.gbkotlinweather.view.state.ListState
 
 class CityViewModel(
     private val liveDate: MutableLiveData<ListState> = MutableLiveData(),

@@ -2,8 +2,8 @@ package ru.dw.gbkotlinweather
 
 import android.app.Application
 import androidx.room.Room
-import ru.dw.gbkotlinweather.repository.local.room.HistoryDao
-import ru.dw.gbkotlinweather.repository.local.room.MyDB
+import ru.dw.gbkotlinweather.data.room.HistoryDao
+import ru.dw.gbkotlinweather.data.room.MyDB
 import ru.dw.gbkotlinweather.utils.SharedPreferencesManager
 
 

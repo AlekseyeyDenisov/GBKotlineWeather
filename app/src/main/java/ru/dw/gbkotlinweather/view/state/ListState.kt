@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.view.viewmodel.state
+package ru.dw.gbkotlinweather.view.state
 
 import ru.dw.gbkotlinweather.model.Weather
 

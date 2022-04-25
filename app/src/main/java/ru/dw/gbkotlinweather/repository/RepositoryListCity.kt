@@ -1,6 +1,6 @@
 package ru.dw.gbkotlinweather.repository
 
-import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
+import ru.dw.gbkotlinweather.view.state.ListState
 
 interface RepositoryListCity {
 

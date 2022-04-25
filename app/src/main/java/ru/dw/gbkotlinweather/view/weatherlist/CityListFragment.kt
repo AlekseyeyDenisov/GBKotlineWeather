@@ -15,8 +15,7 @@ import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.showSnackBar
 import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
-import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
-import ru.dw.gbkotlinweather.view.viewmodel.CityViewModel
+import ru.dw.gbkotlinweather.view.state.ListState
 import ru.dw.gbkotlinweather.view.weatherlist.recycler.OnItemClickListenerListCity
 import ru.dw.gbkotlinweather.view.weatherlist.recycler.list.WeatherItemAdapter
 

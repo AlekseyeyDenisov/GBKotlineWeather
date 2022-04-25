@@ -1,4 +1,4 @@
-package ru.dw.gbkotlinweather.repository.api_yandex
+package ru.dw.gbkotlinweather.data.api_yandex
 
 import com.google.gson.annotations.SerializedName
 

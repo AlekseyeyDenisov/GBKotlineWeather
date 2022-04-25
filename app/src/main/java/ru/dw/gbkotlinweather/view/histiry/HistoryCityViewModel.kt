@@ -1,18 +1,17 @@
-package ru.dw.gbkotlinweather.view.viewmodel
+package ru.dw.gbkotlinweather.view.histiry
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.model.Weather
-import ru.dw.gbkotlinweather.repository.DetailsRepository
 import ru.dw.gbkotlinweather.repository.DetailsRepositoryAll
-import ru.dw.gbkotlinweather.repository.DetailsRepositoryRoomImpl
-import ru.dw.gbkotlinweather.repository.RepositoryImpl
-import ru.dw.gbkotlinweather.view.viewmodel.state.ListState
+import ru.dw.gbkotlinweather.repository.DetailsRepositoryImpl
+import ru.dw.gbkotlinweather.view.details.DetailsViewModel
+import ru.dw.gbkotlinweather.view.state.ListState
 
 class HistoryCityViewModel(
     private val liveDate: MutableLiveData<ListState> = MutableLiveData(),
-    private val repository: DetailsRepositoryAll = DetailsRepositoryRoomImpl()
+    private val repository: DetailsRepositoryAll = DetailsRepositoryImpl()
 ) : ViewModel() {
     fun getLiveData(): LiveData<ListState> {
         return liveDate
@@ -23,7 +22,7 @@ class HistoryCityViewModel(
 
     private fun getDataWeather() {
         liveDate.postValue(ListState.Loading)
-        repository.getAllWeatherDetails(object:DetailsViewModel.CallbackResponseForAll{
+        repository.getAllWeatherDetails(object: DetailsViewModel.CallbackResponseForAll{
             override fun onResponseSuccess(weather: List<Weather>) {
                 val resultSuccess  = ListState.Success(weather)
                 liveDate.postValue(resultSuccess)
