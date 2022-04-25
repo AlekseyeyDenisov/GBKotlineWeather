@@ -1,22 +1,21 @@
-package ru.dw.gbkotlinweather.repository
+package ru.dw.gbkotlinweather.data.local
 
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.model.Weather
-import ru.dw.gbkotlinweather.view.viewmodel.AppState
+import ru.dw.gbkotlinweather.repository.RepositoryListCity
+import ru.dw.gbkotlinweather.view.state.ListState
 
-class DataLocal : RepositoryListCity {
-    override fun getWorldWeatherFromLocalStorage(): AppState {
-      //return  if ((1..6).random() > 1)
-      return  if (true)
-             AppState.Success(getWorldCities())
-        else AppState.Error(Throwable("Ошибка"))
+class DataLocalListCity : RepositoryListCity {
+    override fun getWorldWeatherFromLocalStorage(): ListState {
+        return if ((1..10).random() > 1)
+            ListState.Success(getWorldCities())
+        else ListState.Error(Throwable("Ошибка"))
     }
 
-    override fun getRussianWeatherFromLocalStorage(): AppState {
-        //return  if ((1..6).random() > 1)
-            return  if (true)
-            AppState.Success(getRussianCities())
-        else AppState.Error(Throwable("Ошибка"))
+    override fun getRussianWeatherFromLocalStorage(): ListState {
+        return if ((1..10).random() > 1)
+            ListState.Success(getRussianCities())
+        else ListState.Error(Throwable("Ошибка"))
     }
 
     private fun getWorldCities(): List<Weather> = listOf(

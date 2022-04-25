@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import coil.ImageLoader
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.google.android.material.snackbar.Snackbar
 import ru.dw.gbkotlinweather.databinding.FragmentDetailsBinding
 import ru.dw.gbkotlinweather.model.Weather
-import ru.dw.gbkotlinweather.view.viewmodel.DetailsState
-import ru.dw.gbkotlinweather.view.viewmodel.DetailsViewModel
+import ru.dw.gbkotlinweather.utils.getUrlYandexSvgIcon
+import ru.dw.gbkotlinweather.utils.loadSvg
+import ru.dw.gbkotlinweather.view.state.DetailsState
 
 const val KEY_BUNDLE_WEATHER = "KEY_BUNDLE_WEATHER"
 
@@ -85,22 +82,11 @@ class DetailsFragment : Fragment() {
             cityCoordinates.text = StringBuilder("${weather.city.lat} ${weather.city.lon}")
             feelsLikeValue.text = weather.feelsLike.toString()
             temperatureValue.text = weather.temperature.toString()
-            headerIcon.loadSvg("https://yastatic.net/weather/i/icons/blueye/color/svg/${weather.icon}.svg")
+            headerIcon.loadSvg(getUrlYandexSvgIcon(weather.icon))
         }
 
 
     }
 
-    private fun ImageView.loadSvg(url: String) {
-        val imageLoader = ImageLoader.Builder(this.context)
-            .componentRegistry { add(SvgDecoder(this@loadSvg.context)) }
-            .build()
-        val request = ImageRequest.Builder(this.context)
-            .crossfade(true)
-            .crossfade(500)
-            .data(url)
-            .target(this)
-            .build()
-        imageLoader.enqueue(request)
-    }
+
 }
