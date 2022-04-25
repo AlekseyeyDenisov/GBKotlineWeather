@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.dw.gbkotlinweather.model.Weather
-import ru.dw.gbkotlinweather.repository.DetailsRepositoryAll
 import ru.dw.gbkotlinweather.repository.DetailsRepositoryImpl
+import ru.dw.gbkotlinweather.repository.HistoryRepository
 import ru.dw.gbkotlinweather.view.details.DetailsViewModel
 import ru.dw.gbkotlinweather.view.state.ListState
 
 class HistoryCityViewModel(
     private val liveDate: MutableLiveData<ListState> = MutableLiveData(),
-    private val repository: DetailsRepositoryAll = DetailsRepositoryImpl()
+    private val repository: HistoryRepository = DetailsRepositoryImpl()
 ) : ViewModel() {
     fun getLiveData(): LiveData<ListState> {
         return liveDate
@@ -34,8 +34,6 @@ class HistoryCityViewModel(
             }
 
         })
-        //liveDate.postValue(answer)
-
     }
 
 }

@@ -17,7 +17,7 @@ import ru.dw.gbkotlinweather.utils.convertDtoToModel
 import ru.dw.gbkotlinweather.utils.convertWeatherToEntity
 import ru.dw.gbkotlinweather.view.details.DetailsViewModel
 
-object RetrofitDetailsHelper : DetailsRepository {
+object HelperRetrofitDetails : DetailsRepository {
     private val retrofit: WeatherApi = initRetrofit()
 
     private fun initRetrofit(): WeatherApi {
@@ -41,9 +41,6 @@ object RetrofitDetailsHelper : DetailsRepository {
                                 this.city = city
                             }
                             callbackDetailsWeather.onResponseSuccess(weather)
-                            Thread {
-                                MyApp.getDBRoom().insert(convertWeatherToEntity(weather))
-                            }.start()
                         }
                     }
                 }
@@ -54,5 +51,7 @@ object RetrofitDetailsHelper : DetailsRepository {
 
             })
     }
+
+
 
 }
