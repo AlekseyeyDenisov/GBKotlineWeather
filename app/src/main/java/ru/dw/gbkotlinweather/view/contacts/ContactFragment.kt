@@ -1,6 +1,7 @@
 package ru.dw.gbkotlinweather.view.contacts
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
@@ -13,37 +14,40 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentUserContactBinding
 import ru.dw.gbkotlinweather.utils.TAG
 import ru.dw.gbkotlinweather.utils.arrayPermissions
-import ru.dw.gbkotlinweather.view.state.DetailsState
 
 
 class ContactFragment : Fragment() {
     private var _banding: FragmentUserContactBinding? = null
     private val binding get() = _banding!!
+    private var permissionCall = false
 
-    private val viewModelDetails: ContactViewModel by lazy {
-        ViewModelProvider(this).get(ContactViewModel::class.java)
-    }
 
     private val requestMultiplePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     )
     { resultsMap ->
-        var i = 0
+
         resultsMap.forEach {
             if (it.value) {
-                i++
+                when (it.key) {
+                    "android.permission.READ_CONTACTS" -> {
+                        loadPhoneContact()
+                    }
+                    "android.permission.CALL_PHONE" -> {
+                        permissionCall = true
+
+                    }
+                }
             } else {
-                Log.d(TAG, "Необходима разрешение ${it.key}")
+                message("${it.key}")
+
             }
         }
     }
-
 
 
     override fun onCreateView(
@@ -57,14 +61,6 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestMultiplePermissionLauncher.launch(arrayPermissions)
-
-        val observer = Observer<DetailsState> {
-
-        }
-        viewModelDetails.getLiveDataCityWeather().observe(viewLifecycleOwner, observer)
-
-        loadPhoneContact()
-
 
     }
 
@@ -98,15 +94,32 @@ class ContactFragment : Fragment() {
                 textViewPhone.text = phone
                 binding.containerForContact.addView(view)
                 view.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_CALL)
-                    intent.data = Uri.parse("tel:$phone")
-                    startActivity(intent)
+                    if (permissionCall){
+                        val intent = Intent(Intent.ACTION_CALL)
+                        intent.data = Uri.parse("tel:$phone")
+                        startActivity(intent)
+                    }
+
                 }
             }
         }
         cursor?.close()
     }
 
+    private fun message(text:String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Доступ к контактам")
+            .setMessage("Необходимо разрешение $text")
+            .setPositiveButton("предоставить доступ"){_,_->
+                requestMultiplePermissionLauncher.launch(arrayPermissions)
+            }
+            .setNegativeButton("Вернуться обратно"){dialog,_->
+                requireActivity().onBackPressed()
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
 
 
     companion object {
