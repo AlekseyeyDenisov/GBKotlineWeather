@@ -7,4 +7,6 @@
     <string name="reload">Reload</string>
     <string name="russia">russia</string>
     <string name="updateListCity">Обновить</string>
+    <string name="history">History</string>
+    <string name="contact">Contact</string>
 </resources>

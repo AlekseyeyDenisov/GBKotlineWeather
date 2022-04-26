@@ -64,7 +64,7 @@ class CityHistoryListFragment : Fragment() {
                 }
                 adapterWeatherList.submitList(data.weatherList)
             }
-
+            ListState.Loading -> { }
         }
     }
 
