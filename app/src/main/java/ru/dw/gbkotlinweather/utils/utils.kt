@@ -1,5 +1,6 @@
 package ru.dw.gbkotlinweather.utils
 
+import android.Manifest
 import android.view.View
 import android.widget.ImageView
 import coil.ImageLoader
@@ -85,4 +86,9 @@ fun ImageView.loadSvg(url: String) {
 fun getUrlYandexSvgIcon(name:String):String{
     return "https://yastatic.net/weather/i/icons/blueye/color/svg/${name}.svg"
 }
+
+val arrayPermissions = arrayOf(
+    Manifest.permission.READ_CONTACTS,
+    Manifest.permission.CALL_PHONE
+)
 
