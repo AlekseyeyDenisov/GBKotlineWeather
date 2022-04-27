@@ -16,14 +16,20 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentUserContactBinding
+import ru.dw.gbkotlinweather.model.UserContact
 import ru.dw.gbkotlinweather.utils.TAG
 import ru.dw.gbkotlinweather.utils.arrayPermissions
+import ru.dw.gbkotlinweather.view.contacts.recycler.AdapterContactUser
+import ru.dw.gbkotlinweather.view.contacts.recycler.OnItemListenerContactUser
 
 
-class ContactFragment : Fragment() {
+class ContactFragment : Fragment(), OnItemListenerContactUser {
     private var _banding: FragmentUserContactBinding? = null
     private val binding get() = _banding!!
     private var permissionCall = false
+    private val adapterContract = AdapterContactUser(this)
+    private val listUserContact = ArrayList<UserContact>()
+
 
 
     private val requestMultiplePermissionLauncher = registerForActivityResult(
@@ -43,7 +49,7 @@ class ContactFragment : Fragment() {
                     }
                 }
             } else {
-                message("${it.key}")
+                message(it.key)
 
             }
         }
@@ -61,7 +67,12 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestMultiplePermissionLauncher.launch(arrayPermissions)
+        initRecycler()
 
+    }
+
+    private fun initRecycler() {
+        binding.recyclerViewUserContact.adapter = adapterContract
     }
 
     @SuppressLint("Range")
@@ -78,32 +89,15 @@ class ContactFragment : Fragment() {
 
         cursor?.let { cur ->
             while (cur.moveToNext()) {
-
                 val columnIndexName = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 val name = cur.getString(columnIndexName)
-                Log.d(TAG, "loadPhoneContact: ${cur.getString(columnIndexName)}")
                 val phone =
                     cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                Log.d(TAG, "loadPhoneContact number: $phone ")
-
-                val view = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.item_user_phone_user, binding.root, false)
-                val textViewName = view.findViewById<TextView>(R.id.name_contact)
-                val textViewPhone = view.findViewById<TextView>(R.id.phone_contact)
-                textViewName.text = name
-                textViewPhone.text = phone
-                binding.containerForContact.addView(view)
-                view.setOnClickListener {
-                    if (permissionCall){
-                        val intent = Intent(Intent.ACTION_CALL)
-                        intent.data = Uri.parse("tel:$phone")
-                        startActivity(intent)
-                    }
-
-                }
+                listUserContact.add(UserContact(name,phone))
             }
         }
         cursor?.close()
+        adapterContract.submitList(listUserContact)
     }
 
     private fun message(text:String) {
@@ -131,6 +125,14 @@ class ContactFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _banding = null
+    }
+
+    override fun onClickItemContactUser(userContact: UserContact) {
+        if (permissionCall){
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse("tel:${userContact.phoneContact}")
+            startActivity(intent)
+        }
     }
 
 
