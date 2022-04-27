@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,6 +27,8 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
     }
     private var permissionCall = false
     private val adapterContract = AdapterContactUser(this)
+    var cashData : List<UserContact> = ArrayList()
+    var filterData : List<UserContact> = ArrayList()
 
 
 
@@ -65,14 +68,36 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestMultiplePermissionLauncher.launch(arrayPermissions)
-        val observer = Observer<List<UserContact>> { data -> adapterContract.submitList(data)}
+        val observer = Observer<List<UserContact>> { data ->
+            cashData = data
+            setData(data)
+         }
         viewModel.getLiveContact().observe(viewLifecycleOwner,observer)
-
-
-
         initRecycler()
+        val mSearch = binding.ContactSearch
+        mSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filterData =  cashData.filter {
+                    it.nameContact.contains(newText)
+
+                }
+                adapterContract.submitList(filterData)
+                return false
+            }
+
+        })
 
 
+    }
+
+
+    private fun setData(data: List<UserContact>) {
+        val sort = data.sortedBy { it.nameContact }
+        adapterContract.submitList(sort)
     }
 
     private fun initRecycler() {

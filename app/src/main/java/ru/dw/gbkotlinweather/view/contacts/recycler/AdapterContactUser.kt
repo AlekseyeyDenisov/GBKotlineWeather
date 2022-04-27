@@ -3,7 +3,6 @@ package ru.dw.gbkotlinweather.view.contacts.recycler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import ru.dw.gbkotlinweather.databinding.ItemHistoryRecyclerWetherBinding
 import ru.dw.gbkotlinweather.databinding.ItemUserPhoneUserBinding
 import ru.dw.gbkotlinweather.model.UserContact
 
