@@ -22,15 +22,12 @@ import ru.dw.gbkotlinweather.view.contacts.recycler.OnItemListenerContactUser
 class ContactFragment : Fragment(), OnItemListenerContactUser {
     private var _banding: FragmentUserContactBinding? = null
     private val binding get() = _banding!!
-    private val viewModel:ContactUserViewModel by lazy {
+    private val viewModel: ContactUserViewModel by lazy {
         ViewModelProvider(this).get(ContactUserViewModel::class.java)
     }
     private var permissionCall = false
     private val adapterContract = AdapterContactUser(this)
-    var cashData : List<UserContact> = ArrayList()
-    var filterData : List<UserContact> = ArrayList()
-
-
+    var oldData: List<UserContact> = ArrayList()
 
 
     private val requestMultiplePermissionLauncher = registerForActivityResult(
@@ -69,21 +66,20 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
         super.onViewCreated(view, savedInstanceState)
         requestMultiplePermissionLauncher.launch(arrayPermissions)
         val observer = Observer<List<UserContact>> { data ->
-            cashData = data
+            oldData = data
             setData(data)
-         }
-        viewModel.getLiveContact().observe(viewLifecycleOwner,observer)
+        }
+        viewModel.getLiveContact().observe(viewLifecycleOwner, observer)
         initRecycler()
         val mSearch = binding.ContactSearch
-        mSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        mSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                filterData =  cashData.filter {
+                val filterData = oldData.filter {
                     it.nameContact.contains(newText)
-
                 }
                 adapterContract.submitList(filterData)
                 return false
@@ -105,14 +101,14 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
     }
 
 
-    private fun message(text:String) {
+    private fun message(text: String) {
         AlertDialog.Builder(requireContext())
             .setTitle("Доступ к контактам")
             .setMessage("Необходимо разрешение $text")
-            .setPositiveButton("предоставить доступ"){_,_->
+            .setPositiveButton("предоставить доступ") { _, _ ->
                 requestMultiplePermissionLauncher.launch(arrayPermissions)
             }
-            .setNegativeButton("Вернуться обратно"){dialog,_->
+            .setNegativeButton("Вернуться обратно") { dialog, _ ->
                 requireActivity().onBackPressed()
                 dialog.dismiss()
             }
@@ -133,7 +129,7 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
     }
 
     override fun onClickItemContactUser(userContact: UserContact) {
-        if (permissionCall){
+        if (permissionCall) {
             val intent = Intent(Intent.ACTION_CALL)
             intent.data = Uri.parse("tel:${userContact.phoneContact}")
             startActivity(intent)
