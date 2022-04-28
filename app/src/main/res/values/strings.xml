@@ -9,4 +9,8 @@
     <string name="updateListCity">Обновить</string>
     <string name="history">History</string>
     <string name="contact">Contact</string>
+    <string name="permision_contact">Доступ к контактам</string>
+    <string name="permission_required">\"Необходимо разрешение \"</string>
+    <string name="grant_access">предоставить доступ</string>
+    <string name="back_presesed">Вернуться обратно</string>
 </resources>

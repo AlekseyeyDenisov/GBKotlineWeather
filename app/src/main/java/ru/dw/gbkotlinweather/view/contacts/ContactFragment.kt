@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentUserContactBinding
 import ru.dw.gbkotlinweather.model.UserContact
 import ru.dw.gbkotlinweather.utils.arrayPermissions
@@ -86,9 +88,8 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
             }
 
         })
-
-
     }
+
 
 
     private fun setData(data: List<UserContact>) {
@@ -102,18 +103,20 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
 
 
     private fun message(text: String) {
+
         AlertDialog.Builder(requireContext())
-            .setTitle("Доступ к контактам")
-            .setMessage("Необходимо разрешение $text")
-            .setPositiveButton("предоставить доступ") { _, _ ->
+            .setTitle(getString(R.string.permision_contact))
+            .setMessage(getString(R.string.permission_required) + text)
+            .setPositiveButton(getString(R.string.grant_access)) { _, _ ->
                 requestMultiplePermissionLauncher.launch(arrayPermissions)
             }
-            .setNegativeButton("Вернуться обратно") { dialog, _ ->
+            .setNegativeButton(getString(R.string.back_presesed)) { dialog, _ ->
                 requireActivity().onBackPressed()
                 dialog.dismiss()
             }
             .create()
             .show()
+        TODO("сделать правльную реализацию вывода окна")
     }
 
 
