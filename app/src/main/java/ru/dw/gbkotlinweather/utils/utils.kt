@@ -1,5 +1,6 @@
 package ru.dw.gbkotlinweather.utils
 
+import android.Manifest
 import android.view.View
 import android.widget.ImageView
 import coil.ImageLoader
@@ -24,6 +25,8 @@ const val CONNECTION_TIMEOUT = 1000
 const val READ_TIMEOUT = 1000
 const val CONSTANT_LAT = "lat"
 const val CONSTANT_LON = "lon"
+const val TAG_FRAGMENT_HISTORY = "fragment-history"
+const val TAG_FRAGMENT_CONTACT = "fragment-contact"
 
 
 fun View.showSnackBar(
@@ -83,4 +86,5 @@ fun ImageView.loadSvg(url: String) {
 fun getUrlYandexSvgIcon(name:String):String{
     return "https://yastatic.net/weather/i/icons/blueye/color/svg/${name}.svg"
 }
+
 

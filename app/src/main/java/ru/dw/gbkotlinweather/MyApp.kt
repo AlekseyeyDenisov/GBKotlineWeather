@@ -12,40 +12,27 @@ class MyApp : Application() {
 
     companion object {
         private var appContext: MyApp? = null
+        lateinit var pref: SharedPreferencesManager
 
-        private var pref: SharedPreferencesManager? = null
-
-        fun getPref(): SharedPreferencesManager {
-            if (pref == null) {
-                if (appContext != null) {
-                    pref = SharedPreferencesManager(appContext!!)
-                } else {
-                    throw IllegalStateException("Пустой  appContext в APP")
-                }
-            }
-            return pref as SharedPreferencesManager
-        }
-
-        private var db: MyDB? = null
+        private var dbRoom: MyDB? = null
 
         fun getDBRoom(): HelperRoom {
-            if (db == null) {
+            if (dbRoom == null) {
                 if (appContext != null) {
-                    db = Room.databaseBuilder(appContext!!, MyDB::class.java, "test")
-                        //.allowMainThreadQueries()
-                        .build()
+                    dbRoom = Room.databaseBuilder(appContext!!, MyDB::class.java, "test").build()
                 } else {
                     throw IllegalStateException("Пустой  appContext в APP")
                 }
             }
 
-            return HelperRoom(db!!.historyDao())
+            return HelperRoom(dbRoom!!.historyDao())
         }
     }
 
     override fun onCreate() {
         super.onCreate()
         appContext = this
+        pref = SharedPreferencesManager(this)
 
 
     }

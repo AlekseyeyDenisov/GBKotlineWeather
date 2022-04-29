@@ -30,7 +30,7 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
     //private val adapterWeatherList = WeatherListAdapter(this)                   //list Adapter
     private val adapterWeatherList = WeatherItemAdapter(this) //Item Adapter
 
-    private val pref = MyApp.getPref()
+    private val pref = MyApp.pref
     private var isRussian = true
 
 
@@ -74,11 +74,12 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
         when (data) {
             is ListState.Error -> {
                 binding.loadingListLayout.visibility = View.GONE
-                binding.loadingListLayout.showSnackBar(data.error.toString(), getString(R.string.updateListCity),
+                binding.loadingListLayout.showSnackBar(data.error.toString(),
+                    getString(R.string.updateListCity),
                     {
-                    viewModel.getDataListCity(isRussian)
-                    setValueFloatingButton(isRussian)
-                })
+                        viewModel.getDataListCity(isRussian)
+                        setValueFloatingButton(isRussian)
+                    })
             }
             ListState.Loading -> {
                 binding.loadingListLayout.visibility = View.VISIBLE
@@ -93,23 +94,19 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
         }
     }
 
-    private fun setValueFloatingButton(flag:Boolean) {
-        if (flag) {
-            binding.floatingActionButton.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_russia
-                )
-            )
-        } else {
+    private fun setValueFloatingButton(flag: Boolean) {
+        if (flag) valueButton(R.drawable.ic_russia)
+        else valueButton(R.drawable.ic_earth)
 
-            binding.floatingActionButton.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_earth
-                )
+    }
+
+    private fun valueButton(drawable: Int) {
+        binding.floatingActionButton.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                drawable
             )
-        }
+        )
 
     }
 

@@ -64,7 +64,7 @@ class DetailsRepositoryImpl : DetailsRepository, HistoryRepository {
         helperRoom.addWeather(weather)
     }
 
-    private fun isInternet() = MyApp.getPref().getIsInternet()
+    private fun isInternet() = MyApp.pref.getIsInternet()
 
 
 }

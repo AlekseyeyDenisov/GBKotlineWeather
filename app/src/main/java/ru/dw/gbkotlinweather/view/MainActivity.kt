@@ -8,6 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ru.dw.gbkotlinweather.R
+import ru.dw.gbkotlinweather.utils.TAG_FRAGMENT_CONTACT
+import ru.dw.gbkotlinweather.utils.TAG_FRAGMENT_HISTORY
+import ru.dw.gbkotlinweather.view.contacts.ContactFragment
 import ru.dw.gbkotlinweather.view.histiry.CityHistoryListFragment
 import ru.dw.gbkotlinweather.view.weatherlist.CityListFragment
 
@@ -49,17 +52,36 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_menu,menu)
+        menuInflater.inflate(R.menu.top_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_history ->{
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container,CityHistoryListFragment.newInstance())
-                    .addToBackStack("")
-                    .commit()
+        when (item.itemId) {
+            R.id.action_history -> {
+                val fragmentHistory = supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_HISTORY)
+                if (fragmentHistory == null){
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                        .replace(R.id.container, CityHistoryListFragment.newInstance(),TAG_FRAGMENT_HISTORY)
+                        .addToBackStack("")
+                        .commit()
+                    }
+
+                }
+            }
+
+            R.id.action_user_contact ->{
+                val fragmentContact = supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_CONTACT)
+                if (fragmentContact == null){
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .replace(R.id.container, ContactFragment.newInstance(),
+                                TAG_FRAGMENT_CONTACT)
+                            .addToBackStack("")
+                            .commit()
+                    }
+                }
             }
         }
         return super.onOptionsItemSelected(item)
