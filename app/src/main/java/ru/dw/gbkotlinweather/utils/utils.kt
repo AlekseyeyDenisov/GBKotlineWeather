@@ -87,8 +87,4 @@ fun getUrlYandexSvgIcon(name:String):String{
     return "https://yastatic.net/weather/i/icons/blueye/color/svg/${name}.svg"
 }
 
-val arrayPermissions = arrayOf(
-    Manifest.permission.READ_CONTACTS,
-    Manifest.permission.CALL_PHONE
-)
 

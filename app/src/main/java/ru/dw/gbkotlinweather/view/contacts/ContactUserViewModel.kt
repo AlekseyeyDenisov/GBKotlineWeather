@@ -13,13 +13,11 @@ class ContactUserViewModel(application: Application) : AndroidViewModel(applicat
     private val context = application
     private val liveDate: MutableLiveData<List<UserContact>> = MutableLiveData()
     private val listUserContact = ArrayList<UserContact>()
-    init {
-        loadPhoneContact()
-    }
+
     fun getLiveContact() = liveDate
 
     @SuppressLint("Range")
-    private fun loadPhoneContact() {
+    fun loadPhoneContact() {
 
         val contentResolver: ContentResolver = context.contentResolver
         val cursor = contentResolver.query(
