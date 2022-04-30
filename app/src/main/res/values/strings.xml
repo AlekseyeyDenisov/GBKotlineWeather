@@ -17,4 +17,5 @@
     <string name="grant_access">предоставить доступ</string>
     <string name="go_back">Вернуться обратно</string>
     <string name="message_reinstal_application">Вы не предоставили все разрешения, если хотите пользоваться данном функционалом, удалите и поставьте заново программу</string>
+    <string name="google_map">Google map</string>
 </resources>

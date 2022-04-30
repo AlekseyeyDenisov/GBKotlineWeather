@@ -27,6 +27,7 @@ const val CONSTANT_LAT = "lat"
 const val CONSTANT_LON = "lon"
 const val TAG_FRAGMENT_HISTORY = "fragment-history"
 const val TAG_FRAGMENT_CONTACT = "fragment-contact"
+const val TAG_FRAGMENT_MAP = "fragment-map"
 
 
 fun View.showSnackBar(

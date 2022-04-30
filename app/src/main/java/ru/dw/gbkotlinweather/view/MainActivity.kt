@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.utils.TAG_FRAGMENT_CONTACT
 import ru.dw.gbkotlinweather.utils.TAG_FRAGMENT_HISTORY
+import ru.dw.gbkotlinweather.utils.TAG_FRAGMENT_MAP
 import ru.dw.gbkotlinweather.view.contacts.ContactFragment
+import ru.dw.gbkotlinweather.view.googlemap.MapsFragment
 import ru.dw.gbkotlinweather.view.histiry.CityHistoryListFragment
 import ru.dw.gbkotlinweather.view.weatherlist.CityListFragment
 
@@ -78,6 +80,18 @@ class MainActivity : AppCompatActivity() {
                         beginTransaction()
                             .replace(R.id.container, ContactFragment.newInstance(),
                                 TAG_FRAGMENT_CONTACT)
+                            .addToBackStack("")
+                            .commit()
+                    }
+                }
+            }
+            R.id.action_map ->{
+                val fragmentMap = supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_MAP)
+                if (fragmentMap == null){
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .replace(R.id.container,MapsFragment(),
+                                TAG_FRAGMENT_MAP)
                             .addToBackStack("")
                             .commit()
                     }

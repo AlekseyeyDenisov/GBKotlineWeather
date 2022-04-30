@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_contact_phone_24"
         android:title="@string/contact"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_map"
+        android:icon="@drawable/ic_map_24"
+        android:title="@string/google_map"
+        app:showAsAction="always"/>
 
 
 </menu>
