@@ -1,6 +1,7 @@
 package ru.dw.gbkotlinweather.data.google_maps
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -15,50 +16,76 @@ import ru.dw.gbkotlinweather.utils.TAG
 
 class HelperLocation(private val context: Context) {
     private val liveDataLocation = MutableLiveData<Location>()
+    private val locationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
     fun start() = updateLocation()
 
-    fun stop()= run {
-        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    fun stop() = run {
         locationManager.removeUpdates(locationListener)
     }
+
     fun getLiveDataLocation() = liveDataLocation
 
 
 
+    @SuppressLint("MissingPermission")
+    private fun getLastBestLocation() {//последние известное место положение
+        val locationGPS: Location? =
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        locationGPS?.let {
+            liveDataLocation.postValue(it)
+        }
+    }
 
-    private val locationListener = object :LocationListener{
+
+    private val locationListener = object : LocationListener {
 
         override fun onLocationChanged(location: Location) {
-            liveDataLocation.postValue(location)
             Log.d(TAG, "onLocationChanged: $location")
+            liveDataLocation.postValue(location)
+        }
+
+        override fun onFlushComplete(requestCode: Int) {
+            Log.d(TAG, "onFlushComplete requestCode: $requestCode")
+            super.onFlushComplete(requestCode)
+        }
+
+        override fun onLocationChanged(locations: MutableList<Location>) {
+            Log.d(TAG, "onLocationChanged locations: $locations")
+            super.onLocationChanged(locations)
         }
 
         override fun onProviderDisabled(provider: String) {
+            Log.d(TAG, "onProviderDisabled: $provider")
             super.onProviderDisabled(provider)
         }
 
         override fun onProviderEnabled(provider: String) {
+            Log.d(TAG, "onProviderEnabled: $provider")
             super.onProviderEnabled(provider)
         }
 
     }
 
-    private fun updateLocation(){
+    private fun updateLocation() {
+        getLastBestLocation()
         context.let {
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED  &&
-                ActivityCompat.checkSelfPermission(context,
-                    Manifest.permission.ACCESS_COARSE_LOCATION )!= PackageManager.PERMISSION_GRANTED ) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 return
             }
 
-            val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
-            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-
-                locationManager.allProviders.let{
-
-                }
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     LOCATION_REFRESH_TIME,
@@ -68,7 +95,6 @@ class HelperLocation(private val context: Context) {
             }
         }
     }
-
 
 
 }

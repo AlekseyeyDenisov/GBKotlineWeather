@@ -32,6 +32,7 @@ import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
 
 
+
 class MapsFragment : Fragment() {
     private val pref = MyApp.pref
 
@@ -40,7 +41,7 @@ class MapsFragment : Fragment() {
         ViewModelProvider(this).get(MapsViewModel::class.java)
     }
 
-    lateinit var myMap: GoogleMap
+    private lateinit var myMap: GoogleMap
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -50,6 +51,8 @@ class MapsFragment : Fragment() {
             viewModel.startLocation()
             viewModel.getLocation().observe(viewLifecycleOwner) { location ->
                 setMarkerUser(location)
+
+
             }
         } else {
             var nextNumberDenial = pref.getPermitsLocation()
@@ -126,6 +129,18 @@ class MapsFragment : Fragment() {
 
             }.start()
         }
+
+        myMap.setOnMapLongClickListener {
+//            val geofencingClient = LocationServices.getGeofencingClient(requireContext())
+//            val geofence = Geofence.Builder()
+//                .setRequestId((1..100).random().toString()) // Geofence ID
+//                .setCircularRegion(it.latitude, it.longitude, 100F) // задаём зону
+//                .setExpirationDuration(100L) // продолжительность мониторинга
+//                // Тип направления: вход/выход из зоны
+//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+//                .build()
+
+        }
     }
 
     private fun recoveryMarker() {
@@ -153,6 +168,8 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+
     }
 
     override fun onDestroy() {
