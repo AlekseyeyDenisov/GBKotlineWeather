@@ -8,6 +8,7 @@ private const val SHARED_PREFERENCES_FLOAT_ACTION_BUTTON ="sharedPreferences_flo
 private const val SHARED_PREFERENCES_IS_INTERNET = "sharedPreferences_floating_is_internet"
 private const val SHARED_PREFERENCES_IS_PERMITS_READ_CONTACTS = "permits_read_contact"
 private const val SHARED_PREFERENCES_IS_PERMITS_CALL_PHONE = "permits_call_phone"
+private const val SHARED_PREFERENCES_IS_PERMITS_LOCATION = "permits_location"
 
 class SharedPreferencesManager(context: Context) {
     private var pref: SharedPreferences =
@@ -44,6 +45,13 @@ class SharedPreferencesManager(context: Context) {
     }
     fun getPermitsNumberNotReceivedCallPhone():Int{
         return pref.getInt(SHARED_PREFERENCES_IS_PERMITS_CALL_PHONE,0)
+    }
+
+    fun setPermitsLocation(nextNumber:Int){
+        pref.edit().putInt(SHARED_PREFERENCES_IS_PERMITS_LOCATION,nextNumber).apply()
+    }
+    fun getPermitsLocation():Int{
+        return pref.getInt(SHARED_PREFERENCES_IS_PERMITS_LOCATION,0)
     }
 
 }

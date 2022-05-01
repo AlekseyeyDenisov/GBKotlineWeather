@@ -1,6 +1,7 @@
 package ru.dw.gbkotlinweather.view.googlemap
 
 import android.Manifest
+import android.app.AlertDialog
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,11 +17,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.utils.CURRENT_USER_KEY
 
 
 class MapsFragment : Fragment() {
+    private val pref = MyApp.pref
 
 
     private val viewModel: MapsViewModel by lazy {
@@ -37,6 +40,18 @@ class MapsFragment : Fragment() {
             viewModel.startLocation()
             viewModel.getLocation().observe(viewLifecycleOwner) { location ->
                 setMarkerUser(location)
+            }
+        } else {
+            var nextNumberDenial = pref.getPermitsLocation()
+            nextNumberDenial++
+            pref.setPermitsLocation(nextNumberDenial)
+            if (nextNumberDenial <= 2) {
+                repeatMessageRequest(
+                    getString(R.string.permision_gps),
+                    getString(R.string.message_permision_gps)
+                )
+            } else {
+                messageNoPermission()
             }
         }
 
@@ -98,5 +113,33 @@ class MapsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.stopLocation()
+    }
+
+    private fun repeatMessageRequest(title: String, message: String) {
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(getString(R.string.permission_required) + message)
+            .setPositiveButton(getString(R.string.grant_access)) { _, _ ->
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+            .setNegativeButton(getString(R.string.go_back)) { dialog, _ ->
+                requireActivity().onBackPressed()
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun messageNoPermission() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.permission_required)
+            .setMessage(getString(R.string.message_reinstal_application))
+            .setNegativeButton(getString(R.string.go_back)) { dialog, _ ->
+                dialog.dismiss()
+                requireActivity().onBackPressed()
+            }
+            .create()
+            .show()
     }
 }

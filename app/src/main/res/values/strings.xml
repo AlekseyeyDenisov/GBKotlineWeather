@@ -18,4 +18,6 @@
     <string name="go_back">Вернуться обратно</string>
     <string name="message_reinstal_application">Вы не предоставили все разрешения, если хотите пользоваться данном функционалом, удалите и поставьте заново программу</string>
     <string name="google_map">Google map</string>
+    <string name="permision_gps">Разрешение GPS</string>
+    <string name="message_permision_gps">\" Для показа Вашего местоположения на карте необходимо разрешение на получения геолокации\"</string>
 </resources>
