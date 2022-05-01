@@ -20,5 +20,9 @@
     <string name="google_map">Google map</string>
     <string name="permision_gps">Разрешение GPS</string>
     <string name="message_permision_gps">\" Для показа Вашего местоположения на карте необходимо разрешение на получения геолокации\"</string>
-    <string name="address_not_faunt">Адрес не найден</string>
+    <string name="address_not_fount">Адрес не найден</string>
+
+    <string name="default_address">Москва</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
 </resources>

@@ -2,6 +2,7 @@ package ru.dw.gbkotlinweather.view.googlemap
 
 import android.Manifest
 import android.app.AlertDialog
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -19,21 +20,22 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.R
+import ru.dw.gbkotlinweather.databinding.FragmentMapsBinding
 import ru.dw.gbkotlinweather.model.City
 import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.CURRENT_USER_KEY
 import ru.dw.gbkotlinweather.utils.TAG
 import ru.dw.gbkotlinweather.view.details.DetailsFragment
 import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
-
+import java.io.IOException
 
 
 class MapsFragment : Fragment() {
+    private var _binding: FragmentMapsBinding? = null
+    private val binding get() = _binding!!
     private val pref = MyApp.pref
 
 
@@ -70,24 +72,6 @@ class MapsFragment : Fragment() {
 
     }
 
-    private fun setMarkerUser(location: Location) {
-        val latLng = LatLng(location.latitude, location.longitude)
-        val marker = viewModel.myMarker[CURRENT_USER_KEY]
-        if (marker == null) {
-            val markerOptions = MarkerOptions()
-                .position(latLng)
-                .title("Вы")
-            val newMarker: Marker = myMap.addMarker(markerOptions)!!
-            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
-            viewModel.myMarker[CURRENT_USER_KEY] = newMarker
-        } else {
-            marker.position = latLng
-            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
-
-        }
-
-    }
-
 
     private val callback = OnMapReadyCallback { googleMap ->
         myMap = googleMap
@@ -104,7 +88,7 @@ class MapsFragment : Fragment() {
                 )
 
                 Handler(Looper.getMainLooper()).post {
-                    if(address[0].locality != null){
+                    if (address[0].locality != null) {
                         val bundle = Bundle()
                         val weather = Weather(
                             City(
@@ -119,10 +103,13 @@ class MapsFragment : Fragment() {
                             .add(
                                 R.id.container, DetailsFragment.newInstance(bundle)
                             ).addToBackStack("").commit()
-                    }else{
-                        Toast.makeText(requireContext(), getString(R.string.address_not_faunt), Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.address_not_fount),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-
 
 
                 }
@@ -156,26 +143,74 @@ class MapsFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+    private fun searchByAddress() {
+        binding.buttonSearch.setOnClickListener {
+            val geoCoder = Geocoder(it.context)
+            val searchText = binding.searchAddress.text.toString()
+            Thread {
+                try {
+                    val addresses = geoCoder.getFromLocationName(searchText, 1)
+                    if (addresses.size > 0) {
+
+                        goToAddress(addresses, it, searchText)
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }.start()
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+    private fun goToAddress(
+        addresses: MutableList<Address>,
+        view: View,
+        searchText: String
+    ) {
+        val location = LatLng(
+            addresses[0].latitude,
+            addresses[0].longitude
+        )
+        view.post {
+            setMarker(location, searchText, BitmapDescriptorFactory.HUE_GREEN)
+            myMap.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    location,
+                    15f
+                )
+            )
+        }
+    }
 
+    private fun setMarkerUser(location: Location) {
+        val latLng = LatLng(location.latitude, location.longitude)
+        val marker = viewModel.myMarker[CURRENT_USER_KEY]
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
+        if (marker == null) {
+            viewModel.myMarker[CURRENT_USER_KEY] = setMarker(
+                latLng,
+                "Вы",
+                BitmapDescriptorFactory.HUE_AZURE
+            )
+        } else {
+            marker.position = latLng
+
+        }
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.stopLocation()
+    private fun setMarker(
+        location: LatLng,
+        searchText: String,
+        resourceId: Float
+    ): Marker {
+        return myMap.addMarker(
+            MarkerOptions()
+                .position(location)
+                .title(searchText)
+                .icon(BitmapDescriptorFactory.defaultMarker(resourceId))
+        )!!
     }
+
 
     private fun repeatMessageRequest(title: String, message: String) {
 
@@ -204,4 +239,28 @@ class MapsFragment : Fragment() {
             .create()
             .show()
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMapsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+        searchByAddress()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.stopLocation()
+    }
+
+
 }
