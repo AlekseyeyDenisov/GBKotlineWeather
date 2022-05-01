@@ -1,6 +1,6 @@
 package ru.dw.gbkotlinweather.utils
 
-import android.Manifest
+
 import android.view.View
 import android.widget.ImageView
 import coil.ImageLoader
@@ -28,6 +28,11 @@ const val CONSTANT_LON = "lon"
 const val TAG_FRAGMENT_HISTORY = "fragment-history"
 const val TAG_FRAGMENT_CONTACT = "fragment-contact"
 const val TAG_FRAGMENT_MAP = "fragment-map"
+//location
+const val LOCATION_REFRESH_TIME = 5000L
+const val LOCATION_REFRESH_DISTANCE = 50F
+const val CURRENT_USER_KEY = "current user"
+
 
 
 fun View.showSnackBar(

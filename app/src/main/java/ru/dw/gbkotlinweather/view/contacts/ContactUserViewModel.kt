@@ -19,6 +19,8 @@ class ContactUserViewModel(application: Application) : AndroidViewModel(applicat
     @SuppressLint("Range")
     fun loadPhoneContact() {
         if (liveDate.value == null) {
+
+
             val contentResolver: ContentResolver = context.contentResolver
             val cursor = contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
