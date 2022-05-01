@@ -23,7 +23,7 @@ import ru.dw.gbkotlinweather.utils.CURRENT_USER_KEY
 class MapsFragment : Fragment() {
 
 
-    private val  viewModel:MapsViewModel by lazy {
+    private val viewModel: MapsViewModel by lazy {
         ViewModelProvider(this).get(MapsViewModel::class.java)
     }
 
@@ -45,16 +45,16 @@ class MapsFragment : Fragment() {
     private fun setMarkerUser(location: Location) {
         val latLng = LatLng(location.latitude, location.longitude)
         val marker = viewModel.myMarker[CURRENT_USER_KEY]
-        if (marker == null){
+        if (marker == null) {
             val markerOptions = MarkerOptions()
                 .position(latLng)
                 .title("Вы")
             val newMarker: Marker = myMap.addMarker(markerOptions)!!
-            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13F))
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
             viewModel.myMarker[CURRENT_USER_KEY] = newMarker
-        }else{
+        } else {
             marker.position = latLng
-            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,13F))
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13F))
 
         }
 
@@ -64,10 +64,21 @@ class MapsFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
         myMap = googleMap
         myMap.uiSettings.isZoomControlsEnabled = true
-
         requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        recoveryMarker()
+    }
 
-
+    private fun recoveryMarker() {
+        val oldMarker = viewModel.myMarker[CURRENT_USER_KEY]
+        if (oldMarker != null) {
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oldMarker.position, 13F))
+            val newMarker = myMap.addMarker(
+                MarkerOptions()
+                    .position(oldMarker.position)
+                    .title(oldMarker.title)
+            )
+            viewModel.myMarker[CURRENT_USER_KEY] = newMarker!!
+        }
     }
 
     override fun onCreateView(

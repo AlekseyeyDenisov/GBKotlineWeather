@@ -65,8 +65,8 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
                 startActivity(intent)
             }
         } else {
-            pref.setPermitsNumberNotReceivedReadContacts()
-            if (pref.getPermitsNumberNotReceivedReadContacts() <= 2) {
+            pref.setPermitsNumberNotReceivedCallPhone()
+            if (pref.getPermitsNumberNotReceivedCallPhone() <= 2) {
                 repeatMessageRequest(
                     getString(R.string.permission_call_phone),
                     getString((R.string.permission_contact)),
