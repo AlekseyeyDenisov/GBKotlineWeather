@@ -2,11 +2,16 @@ package ru.dw.gbkotlinweather.view.googlemap
 
 import android.Manifest
 import android.app.AlertDialog
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +24,12 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import ru.dw.gbkotlinweather.MyApp
 import ru.dw.gbkotlinweather.R
+import ru.dw.gbkotlinweather.model.City
+import ru.dw.gbkotlinweather.model.Weather
 import ru.dw.gbkotlinweather.utils.CURRENT_USER_KEY
+import ru.dw.gbkotlinweather.utils.TAG
+import ru.dw.gbkotlinweather.view.details.DetailsFragment
+import ru.dw.gbkotlinweather.view.details.KEY_BUNDLE_WEATHER
 
 
 class MapsFragment : Fragment() {
@@ -81,6 +91,41 @@ class MapsFragment : Fragment() {
         myMap.uiSettings.isZoomControlsEnabled = true
         requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         recoveryMarker()
+        myMap.setOnMapClickListener { location ->
+            val geocoder = Geocoder(requireContext())
+            Thread {
+                val address = geocoder.getFromLocation(
+                    location.latitude,
+                    location.longitude,
+                    1
+                )
+
+                Handler(Looper.getMainLooper()).post {
+                    if(address[0].locality != null){
+                        val bundle = Bundle()
+                        val weather = Weather(
+                            City(
+                                address[0].locality,
+                                location.latitude,
+                                location.longitude
+                            )
+                        )
+                        bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
+                        Log.d(TAG, "address : " + address[0].locality)
+                        requireActivity().supportFragmentManager.beginTransaction()
+                            .add(
+                                R.id.container, DetailsFragment.newInstance(bundle)
+                            ).addToBackStack("").commit()
+                    }else{
+                        Toast.makeText(requireContext(), getString(R.string.address_not_faunt), Toast.LENGTH_SHORT).show()
+                    }
+
+
+
+                }
+
+            }.start()
+        }
     }
 
     private fun recoveryMarker() {
