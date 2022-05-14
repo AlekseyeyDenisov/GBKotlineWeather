@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "662155597837",
+    "project_id": "gbkotlinweather",
+    "storage_bucket": "gbkotlinweather.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662155597837:android:0af035753f11328bd3dd44",
+        "android_client_info": {
+          "package_name": "ru.dw.gbkotlinweather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662155597837-hm1pdtbkaso7ig2vnjg9o12m8idipj4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMyOBPqRW3Bzff4ikCdkmfHPHJSzAoUgo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662155597837-hm1pdtbkaso7ig2vnjg9o12m8idipj4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
