@@ -9,6 +9,9 @@ private const val SHARED_PREFERENCES_IS_INTERNET = "sharedPreferences_floating_i
 private const val SHARED_PREFERENCES_IS_PERMITS_READ_CONTACTS = "permits_read_contact"
 private const val SHARED_PREFERENCES_IS_PERMITS_CALL_PHONE = "permits_call_phone"
 private const val SHARED_PREFERENCES_IS_PERMITS_LOCATION = "permits_location"
+private const val SHARED_PREFERENCES_TOKEN_FCM = "token_fcm"
+const val TOKEN_DEFAULT = "no token"
+
 
 class SharedPreferencesManager(context: Context) {
     private var pref: SharedPreferences =
@@ -53,5 +56,13 @@ class SharedPreferencesManager(context: Context) {
     fun getPermitsLocation():Int{
         return pref.getInt(SHARED_PREFERENCES_IS_PERMITS_LOCATION,0)
     }
+
+    fun setTokenFCM(token:String){
+        pref.edit().putString(SHARED_PREFERENCES_TOKEN_FCM,token).apply()
+    }
+    fun getTokenFCM(): String? {
+        return pref.getString(SHARED_PREFERENCES_TOKEN_FCM,TOKEN_DEFAULT)
+    }
+
 
 }
