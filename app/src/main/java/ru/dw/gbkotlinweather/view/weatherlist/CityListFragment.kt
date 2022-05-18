@@ -128,4 +128,6 @@ class CityListFragment : Fragment(), OnItemClickListenerListCity {
         _banding = null
         super.onDestroy()
     }
+
+
 }

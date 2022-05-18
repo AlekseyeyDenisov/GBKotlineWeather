@@ -28,6 +28,7 @@ const val CONSTANT_LON = "lon"
 const val TAG_FRAGMENT_HISTORY = "fragment-history"
 const val TAG_FRAGMENT_CONTACT = "fragment-contact"
 const val TAG_FRAGMENT_MAP = "fragment-map"
+const val TAG_FRAGMENT_LIST = "fragment-list"
 //location
 const val LOCATION_REFRESH_TIME = 5000L
 const val LOCATION_REFRESH_DISTANCE = 50F
@@ -36,7 +37,10 @@ const val CURRENT_USER_KEY = "current user"
 const val KEY_BUNDLE_SERVICE_MESSAGE = "key2"
 const val KEY_BUNDLE_ACTIVITY_MESSAGE = "key1"
 
-//http://45.87.1.212/gb/fcm_send.php?sudent_client_id=df2k8kY3Qaus1nwYT4y6s7:APA91bGH1S6KCsfdXaPPBgqi-JozeGeAsdR1zS77ta2H0_12TFogYfP2f4V-LUInbsZl6A1-I2qe3i_oRLCTxlCleR1RT2vMlZQxD60aAtbkcAY5ZsfLKaSwXI-XkwXZX2BkUqfvUVfj&sudent_server_key=AAAAmiuMmA0:APA91bGXK6OxHkkbFZzxrIcOWTzh110jLHtd3v0W7QzBMwS6DVWZNLUH6M0wSiUBHpdaFFlLEfipBv5ZGAlT5_aElluc8p7o9chLgqIy5NkjUHRUdTJg8PP2xo4NOULh7ny-pnEwiljC
+const val INTENT_EXTRA_FRAGMENT = "INTENT_EXTRA_FRAGMENT"
+const val EXTRA_NAME_MAP = "map_fragment"
+const val EXTRA_NAME_HISTORY = "history_fragment"
+
 
 
 
