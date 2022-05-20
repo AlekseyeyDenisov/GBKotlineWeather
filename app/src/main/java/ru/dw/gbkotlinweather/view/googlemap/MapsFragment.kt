@@ -116,18 +116,6 @@ class MapsFragment : Fragment() {
 
             }.start()
         }
-
-        myMap.setOnMapLongClickListener {
-//            val geofencingClient = LocationServices.getGeofencingClient(requireContext())
-//            val geofence = Geofence.Builder()
-//                .setRequestId((1..100).random().toString()) // Geofence ID
-//                .setCircularRegion(it.latitude, it.longitude, 100F) // задаём зону
-//                .setExpirationDuration(100L) // продолжительность мониторинга
-//                // Тип направления: вход/выход из зоны
-//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
-//                .build()
-
-        }
     }
 
     private fun recoveryMarker() {
@@ -213,7 +201,6 @@ class MapsFragment : Fragment() {
 
 
     private fun repeatMessageRequest(title: String, message: String) {
-
         AlertDialog.Builder(requireContext())
             .setTitle(title)
             .setMessage(getString(R.string.permission_required) + message)

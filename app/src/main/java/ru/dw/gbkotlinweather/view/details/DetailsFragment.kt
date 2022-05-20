@@ -60,16 +60,16 @@ class DetailsFragment : Fragment() {
     private fun getResponse(response: DetailsState) {
         when (response) {
             is DetailsState.Success -> {
-                binding.loadingDetailsLayout.visibility = View.GONE
+                icLoading(false)
                 render(response.weather)
             }
             is DetailsState.Error -> {
-                binding.loadingDetailsLayout.visibility = View.GONE
+                icLoading(false)
                 Snackbar.make(binding.mainView, response.error.message!!, Snackbar.LENGTH_LONG)
                     .show()
             }
             DetailsState.Loading -> {
-                binding.loadingDetailsLayout.visibility = View.VISIBLE
+                icLoading(true)
             }
         }
 
@@ -77,7 +77,7 @@ class DetailsFragment : Fragment() {
 
     private fun render(weather: Weather) {
         with(binding) {
-            loadingDetailsLayout.visibility = View.GONE
+            icLoading(false)
             cityName.text = weather.city.name
             cityCoordinates.text = StringBuilder("${weather.city.lat} ${weather.city.lon}")
             feelsLikeValue.text = weather.feelsLike.toString()
@@ -86,6 +86,11 @@ class DetailsFragment : Fragment() {
         }
 
 
+    }
+
+    private fun icLoading(flag:Boolean) {
+        if (flag) binding.loadingDetailsLayout.visibility = View.VISIBLE
+        else binding.loadingDetailsLayout.visibility = View.GONE
     }
 
 

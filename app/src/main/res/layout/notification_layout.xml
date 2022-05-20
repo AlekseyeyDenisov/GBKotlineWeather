@@ -20,6 +20,6 @@
         android:layout_margin="10dp"
         android:backgroundTint="@color/white"
         android:layout_weight="1"
-        android:text="@string/hisory_weather" />
+        android:text="@string/history_weather" />
 
 </LinearLayout>
