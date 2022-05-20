@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Weather Paid</string>
+    <string name="temperature_label">Температура</string>
+    <string name="feels_like_label">Ощущается как</string>
+    <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="error">Error</string>
+    <string name="reload">Reload</string>
+    <string name="russia">russia</string>
+    <string name="updateListCity">Обновить</string>
+    <string name="history">History</string>
+
+
+    <string name="contact">Contact</string>
+    <string name="permission_contact">Доступ к контактам</string>
+    <string name="permission_call_phone">Доступ к звонкам</string>
+    <string name="permission_required">Необходимо разрешение</string>
+    <string name="grant_access">предоставить доступ</string>
+    <string name="go_back">Вернуться обратно</string>
+    <string name="message_reinstal_application">Вы не предоставили все разрешения, если хотите пользоваться данном функционалом, удалите и поставьте заново программу</string>
+    <string name="google_map">Google map</string>
+    <string name="permision_gps">Разрешение GPS</string>
+    <string name="message_permision_gps">\" Для показа Вашего местоположения на карте необходимо разрешение на получения геолокации\"</string>
+    <string name="address_not_fount">Адрес не найден</string>
+
+    <string name="default_address">Москва</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
+    <string name="hello_service">Привет сервис</string>
+    <string name="hisory_weather">История пагоды</string>
+</resources>
