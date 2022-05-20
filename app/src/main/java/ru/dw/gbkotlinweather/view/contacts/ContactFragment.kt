@@ -54,8 +54,6 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
         }
     }
 
-
-
     private val requestCallPhonePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     )
@@ -67,8 +65,8 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
                 startActivity(intent)
             }
         } else {
-            pref.setPermitsNumberNotReceivedReadContacts()
-            if (pref.getPermitsNumberNotReceivedReadContacts() <= 2) {
+            pref.setPermitsNumberNotReceivedCallPhone()
+            if (pref.getPermitsNumberNotReceivedCallPhone() <= 2) {
                 repeatMessageRequest(
                     getString(R.string.permission_call_phone),
                     getString((R.string.permission_contact)),
@@ -160,7 +158,6 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
             .create()
             .show()
     }
-
 
     companion object {
         fun newInstance(): ContactFragment {

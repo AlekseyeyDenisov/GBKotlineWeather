@@ -17,4 +17,13 @@
     <string name="grant_access">предоставить доступ</string>
     <string name="go_back">Вернуться обратно</string>
     <string name="message_reinstal_application">Вы не предоставили все разрешения, если хотите пользоваться данном функционалом, удалите и поставьте заново программу</string>
+    <string name="google_map">Google map</string>
+    <string name="permision_gps">Разрешение GPS</string>
+    <string name="message_permision_gps">\" Для показа Вашего местоположения на карте необходимо разрешение на получения геолокации\"</string>
+    <string name="address_not_fount">Адрес не найден</string>
+
+    <string name="default_address">Москва</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
+    <string name="hello_service">Привет сервис</string>
 </resources>
