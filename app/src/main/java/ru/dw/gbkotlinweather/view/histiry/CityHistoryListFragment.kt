@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import ru.dw.gbkotlinweather.R
 import ru.dw.gbkotlinweather.databinding.FragmentListHistoryBinding
 import ru.dw.gbkotlinweather.utils.TAG
 import ru.dw.gbkotlinweather.view.histiry.recycler.AdapterWeatherItemHistory
@@ -56,7 +58,7 @@ class CityHistoryListFragment : Fragment() {
     private fun render(data: ListState) {
         when (data) {
             is ListState.Error -> {
-                TODO("Доделать")
+                Toast.makeText(requireContext(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show()
             }
             is ListState.Success -> {
                 data.weatherList.forEach {

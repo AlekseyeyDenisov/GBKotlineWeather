@@ -26,4 +26,7 @@
     <string name="button_search_map">Search</string>
     <string name="marker_start">Start</string>
     <string name="hello_service">Привет сервис</string>
+    <string name="history_weather">История пагоды</string>
+
+    <string name="something_went_wrong">Что то пошло не так</string>
 </resources>

@@ -18,9 +18,22 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        myRelease{
+            Properties properties = new Properties()
+            properties.load(rootProject.file("password.properties").newDataInputStream())
+            def password = properties.getProperty("password")
+
+            storeFile file("weather.jks")
+            storePassword  = password
+            keyAlias "weather"
+            keyPassword = password
+        }
+    }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.myRelease
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -34,6 +47,15 @@ android {
     }
     buildFeatures{
         viewBinding true
+    }
+    flavorDimensions 'version'
+    productFlavors {
+        free {
+            dimension 'version'
+        }
+        paid {
+            dimension 'version'
+        }
     }
     buildTypes.each {
         Properties properties = new Properties()

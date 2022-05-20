@@ -78,10 +78,6 @@ class ContactFragment : Fragment(), OnItemListenerContactUser {
         }
     }
 
-
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
